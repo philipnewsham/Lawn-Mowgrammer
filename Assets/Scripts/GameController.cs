@@ -34,20 +34,18 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < stateProgramme.Count; i++)
         {
-            Debug.LogFormat("current instruction {0}", i);
-            Debug.Log(stateProgramme[i].state.ToString());
             switch (stateProgramme[i].state)
             {
                 case StateIdentifier.State.FORWARD:
-                    if (!gardenController.ForwardBump(transform.localPosition += transform.forward))
+                    Vector3 position = transform.localPosition + transform.forward;
+                    if (!gardenController.ForwardBump(position))
                     {
-                        transform.localPosition += transform.forward;
+                        transform.localPosition = transform.localPosition += transform.forward;
                     }
                     else
                     {
                         bumped = true;
                     }
-
                     break;
                 case StateIdentifier.State.MOW:
                     break;
@@ -56,7 +54,8 @@ public class GameController : MonoBehaviour
                     i = stateProgramme[i].jumpTo - 1;
                     break;
                 case StateIdentifier.State.BUMP:
-                    i = stateProgramme[i].jumpTo - 1;
+                    if(bumped)
+                        i = stateProgramme[i].jumpTo - 1;
                     bumped = false;
                     break;
                 case StateIdentifier.State.ROTATE:
@@ -94,7 +93,10 @@ public class GameController : MonoBehaviour
 
     public void AddGenericInstruction(StateIdentifier.State state, int jumpTo)
     {
-        textBox.text = textBox.text + string.Format("\n{0} {1} {2}", programme.Count, state.ToString(), state == StateIdentifier.State.JUMP?"to " + jumpTo : "");
+        textBox.text = textBox.text + string.Format("\n{0} {1} ", programme.Count, state.ToString());
+        if (state == StateIdentifier.State.JUMP || state == StateIdentifier.State.BUMP)
+            textBox.text += string.Format("to {0}", jumpTo);
+
         Instruction instruction = new Instruction();
         instruction.state = state;
         instruction.jumpTo = jumpTo;

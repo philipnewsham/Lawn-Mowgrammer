@@ -26,22 +26,28 @@ public class GardenController : MonoBehaviour
         {
             GardenType gardenBlock = new GardenType();
             gardenBlock.position = child.position;
-            Material mat = child.GetComponent<MeshRenderer>().materials[0];
+            Material mat = child.GetComponent<MeshRenderer>().sharedMaterials[0];
             if (mat == materials[0])
                 gardenBlock.floorType = FloorType.MOWED;
             if (mat == materials[1])
                 gardenBlock.floorType = FloorType.UNMOWED;
             if (mat == materials[2])
                 gardenBlock.floorType = FloorType.BLOCKER;
+            
+            gardenBlocks.Add(gardenBlock);
         }
-	}
+    }
 
-    public bool ForwardBump(Vector3 position)
+    public bool ForwardBump(Vector3 targetPosition)
     {
+        Vector3 position = new Vector3(targetPosition.x, -1.0f, targetPosition.z);
         foreach (GardenType block in gardenBlocks)
         {
-            if(block.position == new Vector3(position.x, -1, position.y))
+            if (position == block.position)
+            {
+                Debug.Log(block.floorType.ToString());
                 return block.floorType == FloorType.BLOCKER;
+            }
         }
         return false;
     }

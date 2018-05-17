@@ -1775,7 +1775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02ec78e626ef8d44b71256ac6437bd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gardenController: {fileID: 0}
+  gardenController: {fileID: 1695941255}
   textBox: {fileID: 167316066}
 --- !u!23 &1235023747
 MeshRenderer:
@@ -2170,7 +2170,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad1bc20c5b64453469db0c51c93e3025, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: 570de649064ad6c4cb8ae9db15e84f48, type: 2}
+  - {fileID: 2100000, guid: d77e078aa089bf54e932a121c0862aab, type: 2}
+  - {fileID: 2100000, guid: 90d22a68fad0e764c936d5a439d80e09, type: 2}
 --- !u!1 &1727687422
 GameObject:
   m_ObjectHideFlags: 0

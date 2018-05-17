@@ -18,9 +18,10 @@ public class SendCheckInformation : MonoBehaviour
     {
         Instruction instruction = new Instruction();
         instruction.state = state;
-        instruction.jumpTo = int.Parse(inputFields[1].text);
         instruction.checkLetter = gameController.ReturnIntFromLetter(inputFields[0].text);
+        instruction.jumpTo = int.Parse(inputFields[1].text);
         instruction.checkOperator = (Instruction.Operator)int.Parse(inputFields[2].text);
         instruction.checkCount = int.Parse(inputFields[3].text);
+        gameController.AddSpecificInstruction(instruction);
     }
 }

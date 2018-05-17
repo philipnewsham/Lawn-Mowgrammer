@@ -5,9 +5,23 @@ using UnityEngine.UI;
 
 public class Instruction
 {
+    public enum Operator
+    {
+        EQUALS,     //==
+        LESS_THAN,  //<
+        MORE_THAN,  //>
+        EQUAL_LESS, //<=
+        EQUAL_MORE  //>=
+    }
+
     public StateIdentifier.State state;
     public int jumpTo;
+    public int checkLetter;
+    public Operator checkOperator;
+    public int checkCount;
 }
+
+
 
 public class StateIdentifier
 {
@@ -18,6 +32,8 @@ public class StateIdentifier
         JUMP,
         BUMP,
         ROTATE,
+        COUNT,
+        CHECK,
         STOP
     }
 }
@@ -29,6 +45,8 @@ public class GameController : MonoBehaviour
     private bool busy = false;
     public Text textBox;
     private bool bumped = false;
+    private int[] values = new int[26];
+    private string[] letters = new string[26] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
 	
     IEnumerator StartProgram(List<Instruction> stateProgramme)
     {
@@ -60,6 +78,12 @@ public class GameController : MonoBehaviour
                     break;
                 case StateIdentifier.State.ROTATE:
                     transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 90.0f, transform.localEulerAngles.z);
+                    break;
+                case StateIdentifier.State.COUNT:
+                    values[stateProgramme[i].checkLetter]++;
+                    break;
+                case StateIdentifier.State.CHECK:
+                    
                     break;
                 case StateIdentifier.State.STOP:
                     i = stateProgramme.Count;
@@ -103,8 +127,24 @@ public class GameController : MonoBehaviour
         programme.Add(instruction);
     }
 
+    public void AddSpecificInstruction(Instruction instruction)
+    {
+        programme.Add(instruction);
+    }
+
     public void StartProgramme()
     {
         StartCoroutine(StartProgram(programme));
+    }
+
+    public int ReturnIntFromLetter(string letter)
+    {
+        for (int i = 0; i < letters.Length; i++)
+        {
+            if (letter == letters[i])
+                return i;
+        }
+        Debug.LogWarningFormat("{0} is not a possible type! Returning 0");
+        return 0;
     }
 }

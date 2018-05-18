@@ -59,13 +59,10 @@ public class GameController : MonoBehaviour
                     if (!gardenController.ForwardBump(position))
                     {
                         transform.localPosition = transform.localPosition += transform.forward;
+                        gardenController.MowLawn(position);
                     }
                     else
-                    {
                         bumped = true;
-                    }
-                    break;
-                case StateIdentifier.State.MOW:
                     break;
                 case StateIdentifier.State.JUMP:
                     Debug.LogFormat("jump to {0}",stateProgramme[i].jumpTo-1);
@@ -120,7 +117,6 @@ public class GameController : MonoBehaviour
 
     public void AddGenericInstruction(StateIdentifier.State state, int jumpTo)
     {
-
         Instruction instruction = new Instruction();
         instruction.state = state;
         instruction.jumpTo = jumpTo;

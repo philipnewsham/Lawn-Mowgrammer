@@ -6,6 +6,7 @@ public class GardenType
 {
     public FloorType floorType;
     public Vector3 position;
+    public MeshRenderer meshRenderer;
 }
 
 public enum FloorType
@@ -33,22 +34,32 @@ public class GardenController : MonoBehaviour
                 gardenBlock.floorType = FloorType.UNMOWED;
             if (mat == materials[2])
                 gardenBlock.floorType = FloorType.BLOCKER;
-            
+
+            gardenBlock.meshRenderer = child.GetComponent<MeshRenderer>();
             gardenBlocks.Add(gardenBlock);
         }
     }
 
-    public bool ForwardBump(Vector3 targetPosition)
+    public bool ForwardBump(Vector3 position)
     {
-        Vector3 position = new Vector3(targetPosition.x, -1.0f, targetPosition.z);
+        GardenType block = ReturnBlockFromPosition(position);
+        return block.floorType == FloorType.BLOCKER;
+    }
+
+    GardenType ReturnBlockFromPosition(Vector3 position)
+    {
+        position = new Vector3(position.x, -1, position.z);
         foreach (GardenType block in gardenBlocks)
         {
             if (position == block.position)
-            {
-                Debug.Log(block.floorType.ToString());
-                return block.floorType == FloorType.BLOCKER;
-            }
+                return block;
         }
-        return false;
+        return null;
+    }
+
+    public void MowLawn(Vector3 position)
+    {
+        GardenType block = ReturnBlockFromPosition(position);
+        block.meshRenderer.material = materials[0];
     }
 }

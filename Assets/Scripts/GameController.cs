@@ -93,6 +93,7 @@ public class GameController : MonoBehaviour
             yield return new WaitWhile(() => busy);
         }
         Debug.Log("programme ended");
+        gardenController.ProgramComplete();
     }
 
     public void AddForward()

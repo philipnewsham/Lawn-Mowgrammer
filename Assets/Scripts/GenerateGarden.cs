@@ -5,6 +5,7 @@ using UnityEngine;
 public class GenerateGarden : MonoBehaviour
 {
     private int x;
+    private int y = 0;
     private int z;
     private Vector3 currentPosition;
     private Vector3 previousPosition;
@@ -13,6 +14,8 @@ public class GenerateGarden : MonoBehaviour
     private List<GardenType> blocks = new List<GardenType>();
     private bool isBusy;
     private bool gardenFilled = false;
+
+    private float waitTime = 0.1f;
 
     void Start()
     {
@@ -33,16 +36,22 @@ public class GenerateGarden : MonoBehaviour
             StartCoroutine(FillEmptySpaces());
             yield return new WaitWhile(() => isBusy);
         }
+        Debug.Log("filled empty spaces");
         StartCoroutine(FillRemainingBlocker());
+        yield return new WaitWhile(() => isBusy);
+        StartCoroutine(CreateBoundaryWalls());
+        yield return new WaitWhile(() => isBusy);
+
+        FindObjectOfType<GardenController>().SetGardenBlocks(blocks);
         Debug.Log("empty");
     }
 
     IEnumerator CreatePath()
     {
         isBusy = true;
-        while (currentPosition != new Vector3(x, 0.0f, z))
+        while (currentPosition != new Vector3(x, y, z))
         {
-            //Debug.LogFormat("current position = {0}, end position = {1}", currentPosition, new Vector3(x, 0.0f, z));
+            //Debug.LogFormat("current position = {0}, end position = {1}", currentPosition, new Vector3(x, y, z));
             possibleMoves.Clear();
             if (currentPosition.z < z && currentPosition.z + 1 != previousPosition.z)
                 possibleMoves.Add(0);
@@ -66,7 +75,7 @@ public class GenerateGarden : MonoBehaviour
                     break;
             }
             CreateBlock(currentPosition,FloorType.UNMOWED);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(waitTime);
         }
         isBusy = false;
     }
@@ -95,9 +104,9 @@ public class GenerateGarden : MonoBehaviour
 
                 foreach (Vector3 space in blankPositions)
                 {
-                    List<FloorType> floorTypes = new List<FloorType>() { FloorType.BLOCKER, FloorType.UNMOWED };
+                    List<FloorType> floorTypes = new List<FloorType>() { FloorType.BLOCKER, FloorType.UNMOWED, FloorType.UNMOWED };
                     CreateBlock(space, floorTypes[Random.Range(0, floorTypes.Count)]);
-                    yield return new WaitForSeconds(0.2f);
+                    yield return new WaitForSeconds(waitTime);
                 }
 
                 blankPositions.Clear();
@@ -105,8 +114,14 @@ public class GenerateGarden : MonoBehaviour
             else
             {
                 gardenFilled = true;
+                isBusy = false;
             }
         }
+        else
+        {
+            gardenFilled = true;
+        }
+        Debug.Log("is busy false");
         isBusy = false;
     }
 
@@ -117,27 +132,64 @@ public class GenerateGarden : MonoBehaviour
         {
             for (int j = 0; j < z + 1; j++)
             {
-                if (!SpaceFilled(new Vector3(i, 0, j)))
-                    blankPositions.Add(new Vector3(i, 0, j));
+                if (!SpaceFilled(new Vector3(i, y, j)))
+                    blankPositions.Add(new Vector3(i, y, j));
             }
         }
     }
 
     IEnumerator FillRemainingBlocker()
     {
+        Debug.Log("fill remaining blocker");
+        isBusy = true;
         FindEmptySpaces();
-        foreach(Vector3 position in blankPositions)
+
+        Debug.LogFormat("blank positions = {0}", blankPositions.Count);
+        if (blankPositions.Count > 0)
         {
-            CreateBlock(position, FloorType.BLOCKER);
-            yield return new WaitForSeconds(0.2f);
+            foreach (Vector3 position in blankPositions)
+            {
+                CreateBlock(position, FloorType.BLOCKER);
+                yield return new WaitForSeconds(waitTime);
+            }
         }
+        isBusy = false;
+    }
+
+    IEnumerator CreateBoundaryWalls()
+    {
+        isBusy = true;
+        for (int i = 0; i < z + 1; i++)
+        {
+            CreateBlock(new Vector3(-1, y, i), FloorType.BLOCKER);
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        for (int i = 0; i < x + 1; i++)
+        {
+            CreateBlock(new Vector3(i, y, z + 1), FloorType.BLOCKER);
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        for (int i = 0; i < x + 1; i++)
+        {
+            CreateBlock(new Vector3(i, y, -1), FloorType.BLOCKER);
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        for (int i = 0; i < z + 1; i++)
+        {
+            CreateBlock(new Vector3(x + 1, y, i), FloorType.BLOCKER);
+            yield return new WaitForSeconds(waitTime);
+        }
+        isBusy = false;
     }
 
     bool AdjacentToGrass(Vector3 position)
     {
         GardenType gardenType = new GardenType();
         List<FloorType> checkFloorTypes = new List<FloorType>() { FloorType.MOWED, FloorType.UNMOWED };
-        Debug.LogFormat("Check position = {0}", position);
+
         if (position.x > 0)
         {
             gardenType = ReturnGardenTypeFromPosition(position + Vector3.left);
@@ -224,6 +276,7 @@ public class GenerateGarden : MonoBehaviour
     void CreateBlock(Vector3 position, FloorType floorType)
     {
         GameObject blockClone = Instantiate(block, position, Quaternion.identity);
+        blockClone.transform.SetParent(this.transform);
         GardenType gardenType = new GardenType();
         gardenType.position = position;
         gardenType.floorType = floorType;

@@ -22,7 +22,12 @@ public class GardenController : MonoBehaviour
     private List<GardenType> gardenBlocks = new List<GardenType>();
     public Material[] materials;
 
-	void Start ()
+    public void SetGardenBlocks(List<GardenType> sentGardenBlocks)
+    {
+        gardenBlocks = sentGardenBlocks;
+    }
+
+	void FindGardenBlocks ()
     {
 		foreach(Transform child in transform)
         {
@@ -49,7 +54,7 @@ public class GardenController : MonoBehaviour
 
     GardenType ReturnBlockFromPosition(Vector3 position)
     {
-        position = new Vector3(position.x, -1, position.z);
+        position = new Vector3(position.x, position.y - 1, position.z);
         foreach (GardenType block in gardenBlocks)
         {
             if (position == block.position)

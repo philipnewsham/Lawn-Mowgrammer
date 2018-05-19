@@ -21,9 +21,10 @@ public class GenerateGarden : MonoBehaviour
     {
         x = Random.Range(3, 11);
         z = Random.Range(3, 7);
+        FindObjectOfType<CameraController>().SetCamera(x, z);
         currentPosition = Vector3.zero;
         previousPosition = Vector3.zero;
-        CreateBlock(Vector3.zero, FloorType.UNMOWED);
+        CreateBlock(Vector3.zero, FloorType.MOWED);
         StartCoroutine(Generate());
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GenerateGarden : MonoBehaviour
 {
@@ -15,12 +16,20 @@ public class GenerateGarden : MonoBehaviour
     private bool isBusy;
     private bool gardenFilled = false;
 
-    private float waitTime = 0.1f;
+    private float waitTime = 0.0f;
+
+    public int seed;
+    private System.Random rng;
 
     void Start()
     {
-        x = Random.Range(3, 11);
-        z = Random.Range(3, 7);
+        if (seed == 0)
+            seed = UnityEngine.Random.Range(0, int.MaxValue);
+
+        rng = new System.Random(seed);
+
+        x = rng.Next(3, 11);
+        z = rng.Next(3, 7);
         FindObjectOfType<CameraController>().SetCamera(x, z);
         currentPosition = Vector3.zero;
         previousPosition = Vector3.zero;
@@ -59,7 +68,7 @@ public class GenerateGarden : MonoBehaviour
             if (currentPosition.z > 0 && currentPosition.z - 1 != previousPosition.z && currentPosition.x < x)
                 possibleMoves.Add(2);
 
-            int direction = possibleMoves[Random.Range(0, possibleMoves.Count)];
+            int direction = possibleMoves[rng.Next(0, possibleMoves.Count)];
             previousPosition = currentPosition;
             switch (direction)
             {
@@ -104,7 +113,7 @@ public class GenerateGarden : MonoBehaviour
                 foreach (Vector3 space in blankPositions)
                 {
                     List<FloorType> floorTypes = new List<FloorType>() { FloorType.BLOCKER, FloorType.UNMOWED, FloorType.UNMOWED };
-                    CreateBlock(space, floorTypes[Random.Range(0, floorTypes.Count)]);
+                    CreateBlock(space, floorTypes[rng.Next(0, floorTypes.Count)]);
                     yield return new WaitForSeconds(waitTime);
                 }
 

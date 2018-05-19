@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
 public class Instruction
 {
     public enum Operator
@@ -37,18 +38,49 @@ public class StateIdentifier
     }
 }
 
-
+[System.Serializable]
 public class GameController : MonoBehaviour
 {
-    private List<Instruction> programme = new List<Instruction>();
+    private List<Instruction> program = new List<Instruction>();
     public GardenController gardenController;
     private bool busy = false;
     private bool bumped = false;
     private int[] values = new int[26];
     private string[] letters = new string[26] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
-	
+    public GameObject textInstruction;
+    public RectTransform textParent;
+    private List<Text> textInstructions = new List<Text>();
+
+    void Start()
+    {
+        program = SaveController.Load();
+        if (program.Count > 0)
+            UpdateProgramString();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+            ClearProgram();
+    }
+
+    void ClearProgram()
+    {
+        program.Clear();
+        SaveController.Save(program);
+        foreach (Text instructions in textInstructions)
+            Destroy(instructions.gameObject);
+    }
+
+    void UpdateProgramString()
+    {
+        foreach (Instruction instruction in program)
+            AddStringInstruction(instruction);
+    }
+
     IEnumerator StartProgram(List<Instruction> stateProgramme)
     {
+        SaveController.Save(program);
         for (int i = 0; i < stateProgramme.Count; i++)
         {
             for (int j = 0; j < textInstructions.Count; j++)
@@ -129,12 +161,12 @@ public class GameController : MonoBehaviour
     public void AddSpecificInstruction(Instruction instruction)
     {
         AddStringInstruction(instruction);
-        programme.Add(instruction);
+        program.Add(instruction);
     }
 
     public void StartProgramme()
     {
-        StartCoroutine(StartProgram(programme));
+        StartCoroutine(StartProgram(program));
     }
 
     public int ReturnIntFromLetter(string letter)
@@ -156,16 +188,12 @@ public class GameController : MonoBehaviour
         "<=",
         ">="
     };
-
-    public GameObject textInstruction;
-    public RectTransform textParent;
-    private List<Text> textInstructions = new List<Text>();
-
+    
     void AddStringInstruction(Instruction instruction)
     {
         GameObject textClone = Instantiate(textInstruction, textParent);
         Text textBox = textClone.GetComponent<Text>();
-        textBox.text = textBox.text + string.Format("{0} {1} ", programme.Count, instruction.state.ToString());
+        textBox.text = textBox.text + string.Format("{0} {1} ", program.Count, instruction.state.ToString());
         if (instruction.state == StateIdentifier.State.JUMP || instruction.state == StateIdentifier.State.BUMP)
             textBox.text += string.Format("to {0}", instruction.jumpTo);
         if (instruction.state == StateIdentifier.State.COUNT)

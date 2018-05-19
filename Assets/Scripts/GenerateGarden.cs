@@ -37,14 +37,12 @@ public class GenerateGarden : MonoBehaviour
             StartCoroutine(FillEmptySpaces());
             yield return new WaitWhile(() => isBusy);
         }
-        Debug.Log("filled empty spaces");
         StartCoroutine(FillRemainingBlocker());
         yield return new WaitWhile(() => isBusy);
         StartCoroutine(CreateBoundaryWalls());
         yield return new WaitWhile(() => isBusy);
 
         FindObjectOfType<GardenController>().SetGardenBlocks(blocks);
-        Debug.Log("empty");
     }
 
     IEnumerator CreatePath()
@@ -122,7 +120,7 @@ public class GenerateGarden : MonoBehaviour
         {
             gardenFilled = true;
         }
-        Debug.Log("is busy false");
+
         isBusy = false;
     }
 
@@ -141,11 +139,9 @@ public class GenerateGarden : MonoBehaviour
 
     IEnumerator FillRemainingBlocker()
     {
-        Debug.Log("fill remaining blocker");
         isBusy = true;
         FindEmptySpaces();
-
-        Debug.LogFormat("blank positions = {0}", blankPositions.Count);
+        
         if (blankPositions.Count > 0)
         {
             foreach (Vector3 position in blankPositions)

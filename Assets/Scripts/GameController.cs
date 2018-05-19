@@ -22,7 +22,6 @@ public class Instruction
 }
 
 
-
 public class StateIdentifier
 {
     public enum State
@@ -38,12 +37,12 @@ public class StateIdentifier
     }
 }
 
+
 public class GameController : MonoBehaviour
 {
     private List<Instruction> programme = new List<Instruction>();
     public GardenController gardenController;
     private bool busy = false;
-    public Text textBox;
     private bool bumped = false;
     private int[] values = new int[26];
     private string[] letters = new string[26] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
@@ -52,6 +51,9 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < stateProgramme.Count; i++)
         {
+            for (int j = 0; j < textInstructions.Count; j++)
+                textInstructions[j].color = (j == i) ? Color.red : Color.black;
+
             switch (stateProgramme[i].state)
             {
                 case StateIdentifier.State.FORWARD:
@@ -155,15 +157,22 @@ public class GameController : MonoBehaviour
         ">="
     };
 
+    public GameObject textInstruction;
+    public RectTransform textParent;
+    private List<Text> textInstructions = new List<Text>();
+
     void AddStringInstruction(Instruction instruction)
     {
-        textBox.text = textBox.text + string.Format("\n{0} {1} ", programme.Count, instruction.state.ToString());
+        GameObject textClone = Instantiate(textInstruction, textParent);
+        Text textBox = textClone.GetComponent<Text>();
+        textBox.text = textBox.text + string.Format("{0} {1} ", programme.Count, instruction.state.ToString());
         if (instruction.state == StateIdentifier.State.JUMP || instruction.state == StateIdentifier.State.BUMP)
             textBox.text += string.Format("to {0}", instruction.jumpTo);
         if (instruction.state == StateIdentifier.State.COUNT)
             textBox.text += string.Format("{0}++", letters[instruction.checkLetter]);
         if (instruction.state == StateIdentifier.State.CHECK)
             textBox.text += string.Format("[{0} {1} {2}] to {3}", letters[instruction.checkLetter], operatorStrings[(int)instruction.checkOperator], instruction.checkCount, instruction.jumpTo);
+        textInstructions.Add(textClone.GetComponent<Text>());
     }
 
     bool CheckCondition(Instruction.Operator operatorType, int checkValue, int currentValue)

@@ -1,2 +1,2 @@
 # Lawn-Mowgrammer
-Programme your lawn mower!
+Program your lawn mower!

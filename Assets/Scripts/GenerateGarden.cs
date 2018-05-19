@@ -10,8 +10,9 @@ public class GenerateGarden : MonoBehaviour
     private Vector3 previousPosition;
     public GameObject block;
     private List<int> possibleMoves = new List<int>();
-    private List<GameObject> blocks = new List<GameObject>();
+    private List<GardenType> blocks = new List<GardenType>();
     private bool isBusy;
+    private bool gardenFilled = false;
 
     void Start()
     {
@@ -19,6 +20,7 @@ public class GenerateGarden : MonoBehaviour
         z = Random.Range(3, 7);
         currentPosition = Vector3.zero;
         previousPosition = Vector3.zero;
+        CreateBlock(Vector3.zero, FloorType.UNMOWED);
         StartCoroutine(Generate());
     }
 
@@ -26,7 +28,13 @@ public class GenerateGarden : MonoBehaviour
     {
         StartCoroutine(CreatePath());
         yield return new WaitWhile(() => isBusy);
-        Debug.Log("end");
+        while (!gardenFilled)
+        {
+            StartCoroutine(FillEmptySpaces());
+            yield return new WaitWhile(() => isBusy);
+        }
+        StartCoroutine(FillRemainingBlocker());
+        Debug.Log("empty");
     }
 
     IEnumerator CreatePath()
@@ -34,7 +42,7 @@ public class GenerateGarden : MonoBehaviour
         isBusy = true;
         while (currentPosition != new Vector3(x, 0.0f, z))
         {
-            Debug.LogFormat("current position = {0}, end position = {1}", currentPosition, new Vector3(x, 0.0f, z));
+            //Debug.LogFormat("current position = {0}, end position = {1}", currentPosition, new Vector3(x, 0.0f, z));
             possibleMoves.Clear();
             if (currentPosition.z < z && currentPosition.z + 1 != previousPosition.z)
                 possibleMoves.Add(0);
@@ -63,18 +71,164 @@ public class GenerateGarden : MonoBehaviour
         isBusy = false;
     }
 
+    List<Vector3> blankPositions = new List<Vector3>();
     IEnumerator FillEmptySpaces()
     {
+        isBusy = true;
         //find empty spaces
-        //check empty space for adjacent grass blocks
-        yield return null;
+        FindEmptySpaces();
+        if (blankPositions.Count > 0)
+        {
+            List<Vector3> nextLayerBlocks = new List<Vector3>(); //these are the blocks not next to the path
+                                                                 //check if block is adjacent to any grass
+            for (int i = 0; i < blankPositions.Count; i++)
+            {
+                if (!AdjacentToGrass(blankPositions[i]))
+                    nextLayerBlocks.Add(blankPositions[i]);
+            }
+
+            if (nextLayerBlocks.Count < blankPositions.Count)
+            {
+                //remove blocks not next to anything
+                foreach (Vector3 pos in nextLayerBlocks)
+                    blankPositions.Remove(pos);
+
+                foreach (Vector3 space in blankPositions)
+                {
+                    List<FloorType> floorTypes = new List<FloorType>() { FloorType.BLOCKER, FloorType.UNMOWED };
+                    CreateBlock(space, floorTypes[Random.Range(0, floorTypes.Count)]);
+                    yield return new WaitForSeconds(0.2f);
+                }
+
+                blankPositions.Clear();
+            }
+            else
+            {
+                gardenFilled = true;
+            }
+        }
+        isBusy = false;
+    }
+
+    void FindEmptySpaces()
+    {
+        blankPositions.Clear();
+        for (int i = 0; i < x + 1; i++)
+        {
+            for (int j = 0; j < z + 1; j++)
+            {
+                if (!SpaceFilled(new Vector3(i, 0, j)))
+                    blankPositions.Add(new Vector3(i, 0, j));
+            }
+        }
+    }
+
+    IEnumerator FillRemainingBlocker()
+    {
+        FindEmptySpaces();
+        foreach(Vector3 position in blankPositions)
+        {
+            CreateBlock(position, FloorType.BLOCKER);
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    bool AdjacentToGrass(Vector3 position)
+    {
+        GardenType gardenType = new GardenType();
+        List<FloorType> checkFloorTypes = new List<FloorType>() { FloorType.MOWED, FloorType.UNMOWED };
+        Debug.LogFormat("Check position = {0}", position);
+        if (position.x > 0)
+        {
+            gardenType = ReturnGardenTypeFromPosition(position + Vector3.left);
+            if (gardenType != null)
+            {
+                if (CheckIfHasFloorTypes(gardenType, checkFloorTypes))
+                    return true;
+            }
+        }
+
+        if(position.x < x)
+        {
+            gardenType = ReturnGardenTypeFromPosition(position - Vector3.left);
+            if (gardenType != null)
+            {
+                if (CheckIfHasFloorTypes(gardenType, checkFloorTypes))
+                    return true;
+            }
+        }
+
+        if (position.z > 0)
+        {
+            gardenType = ReturnGardenTypeFromPosition(position - Vector3.forward);
+            if (gardenType != null)
+            {
+                if (CheckIfHasFloorTypes(gardenType, checkFloorTypes))
+                    return true;
+            }
+        }
+
+        if (position.z < z)
+        {
+            gardenType = ReturnGardenTypeFromPosition(position + Vector3.forward);
+            if (gardenType != null)
+            {
+                if (CheckIfHasFloorTypes(gardenType, checkFloorTypes))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    bool CheckIfHasFloorTypes(GardenType gardenType, List<FloorType> floorTypes)
+    {
+        foreach(FloorType floor in floorTypes)
+        {
+            if (gardenType.floorType == floor)
+                return true;
+        }
+        return false;
+    }
+
+    FloorType ReturnFloorTypeFromPosition(Vector3 position)
+    {
+        foreach (GardenType block in blocks)
+        {
+            if (block.position == position)
+                return block.floorType;
+        }
+        return FloorType.BLANK;
+    }
+
+    GardenType ReturnGardenTypeFromPosition(Vector3 position)
+    {
+        foreach (GardenType block in blocks)
+        {
+            if (block.position == position)
+                return block;
+        }
+        return null;
+    }
+
+    bool SpaceFilled(Vector3 position)
+    {
+        foreach(GardenType block in blocks)
+        {
+            if (block.position == position)
+                return true;
+        }
+        return false;
     }
 
     public Material[] materials;
     void CreateBlock(Vector3 position, FloorType floorType)
     {
         GameObject blockClone = Instantiate(block, position, Quaternion.identity);
+        GardenType gardenType = new GardenType();
+        gardenType.position = position;
+        gardenType.floorType = floorType;
+        gardenType.meshRenderer = blockClone.GetComponent<MeshRenderer>();
         blockClone.GetComponent<MeshRenderer>().material = materials[(int)floorType];
-        blocks.Add(blockClone);
+        blocks.Add(gardenType);
     }
 }

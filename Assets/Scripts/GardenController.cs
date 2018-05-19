@@ -13,7 +13,8 @@ public enum FloorType
 {
     MOWED,
     UNMOWED,
-    BLOCKER
+    BLOCKER,
+    BLANK
 }
 
 public class GardenController : MonoBehaviour

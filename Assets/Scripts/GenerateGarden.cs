@@ -51,6 +51,11 @@ public class GenerateGarden : MonoBehaviour
         StartCoroutine(CreateBoundaryWalls(x, z));
         yield return new WaitWhile(() => isBusy);
 
+        SetGardenBlocks();
+    }
+
+    public void SetGardenBlocks()
+    {
         FindObjectOfType<GardenController>().SetGardenBlocks(blocks);
     }
 

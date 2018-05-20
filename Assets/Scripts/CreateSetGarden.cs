@@ -24,5 +24,6 @@ public class CreateSetGarden : MonoBehaviour
         }
 
         generateGarden.StartBoundaryWalls(x, z);
-	}
+        generateGarden.SetGardenBlocks();
+    }
 }

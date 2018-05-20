@@ -48,7 +48,7 @@ public class GenerateGarden : MonoBehaviour
         }
         StartCoroutine(FillRemainingBlocker());
         yield return new WaitWhile(() => isBusy);
-        StartCoroutine(CreateBoundaryWalls());
+        StartCoroutine(CreateBoundaryWalls(x, z));
         yield return new WaitWhile(() => isBusy);
 
         FindObjectOfType<GardenController>().SetGardenBlocks(blocks);
@@ -162,30 +162,35 @@ public class GenerateGarden : MonoBehaviour
         isBusy = false;
     }
 
-    IEnumerator CreateBoundaryWalls()
+    public void StartBoundaryWalls(int maxX, int maxZ)
+    {
+        StartCoroutine(CreateBoundaryWalls(maxX, maxZ));
+    }
+
+    public IEnumerator CreateBoundaryWalls(int maxX, int maxZ)
     {
         isBusy = true;
-        for (int i = 0; i < z + 1; i++)
+        for (int i = 0; i < maxZ + 1; i++)
         {
             CreateBlock(new Vector3(-1, y, i), FloorType.BLOCKER);
             yield return new WaitForSeconds(waitTime);
         }
 
-        for (int i = 0; i < x + 1; i++)
+        for (int i = 0; i < maxX + 1; i++)
         {
-            CreateBlock(new Vector3(i, y, z + 1), FloorType.BLOCKER);
+            CreateBlock(new Vector3(i, y, maxZ + 1), FloorType.BLOCKER);
             yield return new WaitForSeconds(waitTime);
         }
 
-        for (int i = 0; i < x + 1; i++)
+        for (int i = 0; i < maxX + 1; i++)
         {
             CreateBlock(new Vector3(i, y, -1), FloorType.BLOCKER);
             yield return new WaitForSeconds(waitTime);
         }
 
-        for (int i = 0; i < z + 1; i++)
+        for (int i = 0; i < maxZ + 1; i++)
         {
-            CreateBlock(new Vector3(x + 1, y, i), FloorType.BLOCKER);
+            CreateBlock(new Vector3(maxX + 1, y, i), FloorType.BLOCKER);
             yield return new WaitForSeconds(waitTime);
         }
         isBusy = false;
@@ -279,7 +284,7 @@ public class GenerateGarden : MonoBehaviour
     }
 
     public Material[] materials;
-    void CreateBlock(Vector3 position, FloorType floorType)
+    public void CreateBlock(Vector3 position, FloorType floorType)
     {
         GameObject blockClone = Instantiate(block, position, Quaternion.identity);
         blockClone.transform.SetParent(this.transform);

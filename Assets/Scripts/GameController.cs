@@ -42,7 +42,7 @@ public class StateIdentifier
 public class GameController : MonoBehaviour
 {
     private List<Instruction> program = new List<Instruction>();
-    public GardenController gardenController;
+    private GardenController gardenController;
     private bool busy = false;
     private bool bumped = false;
     private int[] values = new int[26];
@@ -51,8 +51,12 @@ public class GameController : MonoBehaviour
     public RectTransform textParent;
     private List<Text> textInstructions = new List<Text>();
 
+    private Transform lawnMower;
+
     void Start()
     {
+        lawnMower = GameObject.FindGameObjectWithTag("Player").transform;
+        gardenController = FindObjectOfType<GardenController>();
         program = SaveController.Load();
         if (program.Count > 0)
             UpdateProgramString();
@@ -89,10 +93,10 @@ public class GameController : MonoBehaviour
             switch (stateProgramme[i].state)
             {
                 case StateIdentifier.State.FORWARD:
-                    Vector3 position = transform.localPosition + transform.forward;
+                    Vector3 position = lawnMower.localPosition + lawnMower.forward;
                     if (!gardenController.ForwardBump(position))
                     {
-                        transform.localPosition = transform.localPosition += transform.forward;
+                        lawnMower.localPosition = lawnMower.localPosition += lawnMower.forward;
                         gardenController.MowLawn(position);
                     }
                     else
@@ -108,7 +112,7 @@ public class GameController : MonoBehaviour
                     bumped = false;
                     break;
                 case StateIdentifier.State.ROTATE:
-                    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 90.0f, transform.localEulerAngles.z);
+                    lawnMower.localEulerAngles = new Vector3(lawnMower.localEulerAngles.x, lawnMower.localEulerAngles.y + 90.0f, lawnMower.localEulerAngles.z);
                     break;
                 case StateIdentifier.State.COUNT:
                     values[stateProgramme[i].checkLetter]++;
@@ -127,7 +131,17 @@ public class GameController : MonoBehaviour
             yield return new WaitWhile(() => busy);
         }
         Debug.Log("programme ended");
-        gardenController.ProgramComplete();
+        EndProgram();
+    }
+
+    public GameObject endScreen;
+
+    void EndProgram()
+    {
+        if(gardenController.ProgramComplete())
+        {
+            Instantiate(endScreen, transform);
+        }
     }
 
     public void AddForward()

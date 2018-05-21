@@ -70,7 +70,7 @@ public class GardenController : MonoBehaviour
         block.floorType = FloorType.MOWED;
     }
 
-    public void ProgramComplete()
+    public bool ProgramComplete()
     {
         bool levelCleared = true;
         foreach(GardenType block in gardenBlocks)
@@ -81,6 +81,6 @@ public class GardenController : MonoBehaviour
                 break;
             }
         }
-        Debug.LogFormat("Level {0}complete!", levelCleared ? "" : "in");
+        return levelCleared;
     }
 }

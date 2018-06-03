@@ -28,10 +28,9 @@ public class StateIdentifier
     public enum State
     {
         FORWARD,
-        MOW,
+        ROTATE,
         JUMP,
         BUMP,
-        ROTATE,
         COUNT,
         CHECK,
         STOP
@@ -53,13 +52,39 @@ public class GameController : MonoBehaviour
 
     private Transform lawnMower;
 
+    private bool dragInstruction;
+    private Instruction currentInstruction;
+
+    public bool GetDrag()
+    {
+        return dragInstruction;
+    }
+
+    public void SetDrag(bool drag)
+    {
+        dragInstruction = drag;
+    }
+
+    public void SetCurrentInstruction(Instruction instruction)
+    {
+        currentInstruction = instruction;
+    }
+
+    public Instruction GetCurrentInstruction()
+    {
+        return currentInstruction;
+    }
+
     void Start()
     {
         lawnMower = GameObject.FindGameObjectWithTag("Player").transform;
         gardenController = FindObjectOfType<GardenController>();
         program = SaveController.Load();
         if (program.Count > 0)
+        {
             UpdateProgramString();
+            UpdateInstructionList();
+        }
     }
 
     void Update()
@@ -70,16 +95,52 @@ public class GameController : MonoBehaviour
 
     void ClearProgram()
     {
+        ClearShownInstructions();
+        textInstructions.Clear();
         program.Clear();
         SaveController.Save(program);
+    }
+
+    void ClearShownInstructions()
+    {
         foreach (Text instructions in textInstructions)
             Destroy(instructions.gameObject);
+
+        foreach (Transform child in panelParent)
+            Destroy(child.gameObject);
     }
 
     void UpdateProgramString()
     {
         foreach (Instruction instruction in program)
             AddStringInstruction(instruction);
+    }
+    public GameObject[] instructionButton;
+
+    void UpdateInstructionList()
+    {
+        foreach (Instruction instruction in program)
+        {
+            GameObject instructionClone = Instantiate(instructionButton[(int)instruction.state], panelParent);
+            instructionClone.GetComponent<InstructionInformation>().instruction = instruction;
+        }
+    }
+
+    public void StartProgramme()
+    {
+        foreach (Text text in textInstructions)
+            Destroy(text.gameObject);
+        textInstructions.Clear();
+        program.Clear();
+
+        foreach (Transform child in panelParent)
+        {
+            program.Add(child.GetComponent<InstructionInformation>().instruction);
+            AddStringInstruction(child.GetComponent<InstructionInformation>().instruction);
+        }
+
+        SaveController.Save(program);
+        StartCoroutine(StartProgram(program));
     }
 
     IEnumerator StartProgram(List<Instruction> stateProgramme)
@@ -139,29 +200,7 @@ public class GameController : MonoBehaviour
     void EndProgram()
     {
         if(gardenController.ProgramComplete())
-        {
             Instantiate(endScreen, transform);
-        }
-    }
-
-    public void AddForward()
-    {
-        AddGenericInstruction(StateIdentifier.State.FORWARD, 0);
-    }
-
-    public void AddRotate()
-    {
-        AddGenericInstruction(StateIdentifier.State.ROTATE, 0);
-    }
-
-    public void AddJump(int jumpTo)
-    {
-        AddGenericInstruction(StateIdentifier.State.JUMP, jumpTo);
-    }
-
-    public void AddStop()
-    {
-        AddGenericInstruction(StateIdentifier.State.STOP, 0);
     }
 
     public void AddGenericInstruction(StateIdentifier.State state, int jumpTo)
@@ -178,11 +217,8 @@ public class GameController : MonoBehaviour
         program.Add(instruction);
     }
 
-    public void StartProgramme()
-    {
-        StartCoroutine(StartProgram(program));
-    }
-
+    public Transform panelParent;
+    
     public int ReturnIntFromLetter(string letter)
     {
         for (int i = 0; i < letters.Length; i++)

@@ -182,7 +182,7 @@ public class GameController : MonoBehaviour
                 case StateIdentifier.State.CHECK:
                     Debug.LogFormat("if {0} {1} {2} jump {3}", values[stateProgramme[i].checkLetter], operatorStrings[(int)stateProgramme[i].checkOperator], stateProgramme[i].checkCount, stateProgramme[i].jumpTo);
                     if(CheckCondition(stateProgramme[i].checkOperator, stateProgramme[i].checkCount, values[stateProgramme[i].checkLetter]))
-                        i = stateProgramme[i].jumpTo;
+                        i = stateProgramme[i].jumpTo - 1;
                     break;
                 case StateIdentifier.State.STOP:
                     i = stateProgramme.Count;

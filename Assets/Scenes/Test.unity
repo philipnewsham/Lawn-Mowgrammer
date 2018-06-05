@@ -120,11 +120,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114116163815573660, guid: ab71f99c82e305849bf58c1780f2c3e9,
-        type: 2}
-      propertyPath: instructionPrefabs.Array.size
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 224742968008969138, guid: ab71f99c82e305849bf58c1780f2c3e9,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -350,26 +345,6 @@ Prefab:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224295822046432662, guid: ab71f99c82e305849bf58c1780f2c3e9,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224295822046432662, guid: ab71f99c82e305849bf58c1780f2c3e9,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224295822046432662, guid: ab71f99c82e305849bf58c1780f2c3e9,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224295822046432662, guid: ab71f99c82e305849bf58c1780f2c3e9,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 224795851144593424, guid: ab71f99c82e305849bf58c1780f2c3e9,
         type: 2}
       propertyPath: m_AnchorMin.y
@@ -390,12 +365,26 @@ Prefab:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114116163815573660, guid: ab71f99c82e305849bf58c1780f2c3e9,
+    - target: {fileID: 224295822046432662, guid: ab71f99c82e305849bf58c1780f2c3e9,
         type: 2}
-      propertyPath: instructionPrefabs.Array.data[6]
-      value: 
-      objectReference: {fileID: 1479581272648288, guid: 079f37f77b6a91941b454137697e6315,
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224295822046432662, guid: ab71f99c82e305849bf58c1780f2c3e9,
         type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224295822046432662, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224295822046432662, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ab71f99c82e305849bf58c1780f2c3e9, type: 2}
   m_IsPrefabParent: 0

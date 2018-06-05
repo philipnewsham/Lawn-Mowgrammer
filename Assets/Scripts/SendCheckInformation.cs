@@ -22,7 +22,7 @@ public class SendCheckInformation : MonoBehaviour
         instruction.checkLetter = gameController.ReturnIntFromLetter(inputFields[0].text);
         instruction.jumpTo = int.Parse(inputFields[1].text);
         instruction.checkOperator = (Instruction.Operator)operatorDropdown.value;
-        instruction.checkCount = int.Parse(inputFields[3].text);
+        instruction.checkCount = inputFields[3].text;
         gameController.AddSpecificInstruction(instruction);
     }
 }

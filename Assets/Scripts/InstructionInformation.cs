@@ -11,6 +11,18 @@ public class InstructionInformation : MonoBehaviour
     public Dropdown checkOperaterDropdown;
     public InputField checkCountInputField;
 
+    void Start()
+    {
+        if (jumpToInputField != null)
+            SetJumpTo();
+        if (checkLetterInputField != null)
+            SetCheckLetter();
+        if (checkOperaterDropdown != null)
+            SetCheckOperator();
+        if (checkCountInputField != null)
+            SetCheckCount();
+    }
+
     public void SetJumpTo()
     {
         instruction.jumpTo = int.Parse(jumpToInputField.text);
@@ -18,7 +30,7 @@ public class InstructionInformation : MonoBehaviour
 
     public void SetCheckLetter()
     {
-        instruction.checkLetter = int.Parse(checkLetterInputField.text);
+        instruction.checkLetter = FindObjectOfType<GameController>().ReturnIntFromLetter(checkLetterInputField.text);
     }
 
     public void SetCheckOperator()
@@ -28,6 +40,6 @@ public class InstructionInformation : MonoBehaviour
 
     public void SetCheckCount()
     {
-        instruction.checkCount = int.Parse(checkCountInputField.text);
+        instruction.checkCount = checkCountInputField.text;
     }
 }

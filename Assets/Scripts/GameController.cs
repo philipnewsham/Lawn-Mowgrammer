@@ -19,7 +19,7 @@ public class Instruction
     public int jumpTo;
     public int checkLetter;
     public Operator checkOperator;
-    public int checkCount;
+    public string checkCount;
 }
 
 
@@ -180,8 +180,8 @@ public class GameController : MonoBehaviour
                     Debug.Log(values[stateProgramme[i].checkLetter]);
                     break;
                 case StateIdentifier.State.CHECK:
-                    Debug.LogFormat("if {0} {1} {2} jump {3}", values[stateProgramme[i].checkLetter], operatorStrings[(int)stateProgramme[i].checkOperator], stateProgramme[i].checkCount, stateProgramme[i].jumpTo);
-                    if(CheckCondition(stateProgramme[i].checkOperator, stateProgramme[i].checkCount, values[stateProgramme[i].checkLetter]))
+                    Debug.LogFormat("if {0} {1} {2} jump {3}", values[stateProgramme[i].checkLetter], operatorStrings[(int)stateProgramme[i].checkOperator], ReturnValue(stateProgramme[i].checkCount), stateProgramme[i].jumpTo);
+                    if(CheckCondition(stateProgramme[i].checkOperator, ReturnValue(stateProgramme[i].checkCount), values[stateProgramme[i].checkLetter]))
                         i = stateProgramme[i].jumpTo - 1;
                     break;
                 case StateIdentifier.State.STOP:
@@ -201,6 +201,18 @@ public class GameController : MonoBehaviour
     {
         if(gardenController.ProgramComplete())
             Instantiate(endScreen, transform);
+    }
+
+    int ReturnValue(string value)
+    {
+        Debug.LogFormat("checking");
+        for (int i = 0; i < letters.Length; i++)
+        {
+            if (value == letters[i])
+                return values[i];
+        }
+
+        return int.Parse(value);
     }
 
     public void AddGenericInstruction(StateIdentifier.State state, int jumpTo)

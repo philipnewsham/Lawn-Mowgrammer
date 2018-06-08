@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 224337682129738436}
   - component: {fileID: 222023128510010148}
   - component: {fileID: 114095193889867028}
-  - component: {fileID: 114478267453512814}
   - component: {fileID: 114826767036337626}
+  - component: {fileID: 114572441678322406}
   m_Layer: 5
   m_Name: InstructionSlot
   m_TagString: Untagged
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114478267453512814
+--- !u!114 &114572441678322406
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -165,6 +165,10 @@ MonoBehaviour:
     checkLetter: 0
     checkOperator: 0
     checkCount: 0
+  jumpToInputField: {fileID: 0}
+  checkLetterInputField: {fileID: 0}
+  checkOperaterDropdown: {fileID: 0}
+  checkCountInputField: {fileID: 0}
 --- !u!222 &222023128510010148
 CanvasRenderer:
   m_ObjectHideFlags: 1

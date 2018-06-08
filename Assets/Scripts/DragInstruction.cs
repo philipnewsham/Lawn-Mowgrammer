@@ -29,7 +29,7 @@ public class DragInstruction : MonoBehaviour
         Instruction thisInstruction = new Instruction();
         thisInstruction.state = state;
         gameController.SetCurrentInstruction(thisInstruction);
-        GameObject instructionClone = Instantiate(instruction, transform);
+        GameObject instructionClone = Instantiate(instruction, transform.root);
         instructionClone.GetComponentInChildren<Text>().text = gameController.GetCurrentInstruction().state.ToString();
         rectClone = instructionClone.GetComponent<RectTransform>();
         rectClone.anchoredPosition = Vector2.zero;

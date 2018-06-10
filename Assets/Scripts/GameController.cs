@@ -122,7 +122,7 @@ public class GameController : MonoBehaviour
         foreach (Instruction instruction in program)
         {
             GameObject instructionClone = Instantiate(instructionButton[(int)instruction.state], panelParent);
-            instructionClone.GetComponent<InstructionInformation>().instruction = instruction;
+            instructionClone.GetComponent<InstructionInformation>().SetInstruction(instruction);
         }
     }
 
@@ -240,6 +240,11 @@ public class GameController : MonoBehaviour
         }
         Debug.LogWarningFormat("{0} is not a possible type! Returning 0");
         return 0;
+    }
+
+    public string ReturnLetterFromInt(int letterValue)
+    {
+        return letters[letterValue];
     }
 
     private List<string> operatorStrings = new List<string>()

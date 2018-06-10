@@ -10,6 +10,12 @@ public class InstructionInformation : MonoBehaviour
     public InputField checkLetterInputField;
     public Dropdown checkOperaterDropdown;
     public InputField checkCountInputField;
+    private GameController gameController;
+
+    void Awake()
+    {
+        gameController = FindObjectOfType<GameController>();
+    }
 
     void Start()
     {
@@ -30,7 +36,7 @@ public class InstructionInformation : MonoBehaviour
 
     public void SetCheckLetter()
     {
-        instruction.checkLetter = FindObjectOfType<GameController>().ReturnIntFromLetter(checkLetterInputField.text);
+        instruction.checkLetter = gameController.ReturnIntFromLetter(checkLetterInputField.text);
     }
 
     public void SetCheckOperator()
@@ -41,5 +47,28 @@ public class InstructionInformation : MonoBehaviour
     public void SetCheckCount()
     {
         instruction.checkCount = checkCountInputField.text;
+    }
+
+    public void SetInstruction(Instruction instruction)
+    {
+        this.instruction = instruction;
+        switch (instruction.state)
+        {
+            case StateIdentifier.State.BUMP:
+                jumpToInputField.text = instruction.jumpTo.ToString();
+                break;
+            case StateIdentifier.State.JUMP:
+                jumpToInputField.text = instruction.jumpTo.ToString();
+                break;
+            case StateIdentifier.State.COUNT:
+                checkLetterInputField.text = gameController.ReturnLetterFromInt(instruction.checkLetter);
+                break;
+            case StateIdentifier.State.CHECK:
+                jumpToInputField.text = instruction.jumpTo.ToString();
+                checkOperaterDropdown.value = (int)instruction.checkOperator;
+                checkCountInputField.text = instruction.checkCount;
+                checkLetterInputField.text = gameController.ReturnLetterFromInt(instruction.checkLetter);
+                break;
+        }
     }
 }

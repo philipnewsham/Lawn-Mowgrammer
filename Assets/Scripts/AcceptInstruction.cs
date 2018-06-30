@@ -62,6 +62,7 @@ public class AcceptInstruction : MonoBehaviour
             Destroy(currentInstruction);
             currentInstruction = null;
             hasInstruction = false;
+            gameController.SetCurrentInstruction(null);
         }
     }
 }

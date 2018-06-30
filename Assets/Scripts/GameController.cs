@@ -87,13 +87,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-            ClearProgram();
-    }
-
-    void ClearProgram()
+    public void ClearProgram()
     {
         ClearShownInstructions();
         textInstructions.Clear();

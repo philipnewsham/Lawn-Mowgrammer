@@ -4,4 +4,19 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/GardenGenerationTest.unity
+    guid: b3ec76f880e27294e84457e89f4d3119
+  - enabled: 1
+    path: Assets/Scenes/LevelEndTest.unity
+    guid: d3e9b9d2ad3ae404d9428a3041b35c2f
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: cd8347761f347fe4bb2fdf57eadaae40
+  - enabled: 1
+    path: Assets/Scenes/Test.unity
+    guid: e6233dc71c9839f48a4e1277858a6176
+  - enabled: 1
+    path: Assets/Scenes/Tutorial_01_FORWARD.unity
+    guid: 7850abe45c5fc7b428375325d8a66040

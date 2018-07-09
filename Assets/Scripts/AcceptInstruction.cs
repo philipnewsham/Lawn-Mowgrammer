@@ -11,10 +11,12 @@ public class AcceptInstruction : MonoBehaviour
     private GameController gameController;
 
     public GameObject[] instructionPrefabs;
+    private SizeToChildren sizeToChildren;
 
     void Start()
     {
         gameController = FindObjectOfType<GameController>();
+        sizeToChildren = GetComponent<SizeToChildren>();
     }
 
     public void OnHover()
@@ -63,6 +65,7 @@ public class AcceptInstruction : MonoBehaviour
             currentInstruction = null;
             hasInstruction = false;
             gameController.SetCurrentInstruction(null);
+            sizeToChildren.UpdateHeight();
         }
     }
 }

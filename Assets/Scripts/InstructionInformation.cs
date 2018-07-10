@@ -12,6 +12,7 @@ public class InstructionInformation : MonoBehaviour
     public InputField checkCountInputField;
     private GameController gameController;
     public GameObject lightIcon;
+    public GameObject closeButton;
 
     void Awake()
     {
@@ -30,7 +31,10 @@ public class InstructionInformation : MonoBehaviour
             SetCheckCount();
 
         GameObject light = Instantiate(lightIcon, transform);
-        light.GetComponent<RectTransform>().anchoredPosition = new Vector2(-30, 0);
+        light.GetComponent<RectTransform>().anchoredPosition = new Vector2(-30.0f, 0.0f);
+
+        GameObject close = Instantiate(closeButton, transform);
+        close.GetComponent<RectTransform>().anchoredPosition = new Vector2(30.0f, 0.0f);
     }
 
     public void SetJumpTo()

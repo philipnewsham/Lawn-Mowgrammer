@@ -411,6 +411,8 @@ MonoBehaviour:
   checkOperaterDropdown: {fileID: 114762001432675920}
   checkCountInputField: {fileID: 114888133312292920}
   lightIcon: {fileID: 1606327494308620, guid: 664624fde2ec80c4291fbc5bce2612bb, type: 2}
+  closeButton: {fileID: 1769556388572968, guid: 5131a781bcf2f5c4eb3856fb4cc18de6,
+    type: 2}
 --- !u!114 &114115916657435066
 MonoBehaviour:
   m_ObjectHideFlags: 1

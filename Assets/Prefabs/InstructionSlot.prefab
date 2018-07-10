@@ -170,6 +170,8 @@ MonoBehaviour:
   checkOperaterDropdown: {fileID: 0}
   checkCountInputField: {fileID: 0}
   lightIcon: {fileID: 1606327494308620, guid: 664624fde2ec80c4291fbc5bce2612bb, type: 2}
+  closeButton: {fileID: 1769556388572968, guid: 5131a781bcf2f5c4eb3856fb4cc18de6,
+    type: 2}
 --- !u!222 &222023128510010148
 CanvasRenderer:
   m_ObjectHideFlags: 1

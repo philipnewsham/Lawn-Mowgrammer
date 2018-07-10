@@ -11,6 +11,7 @@ public class InstructionInformation : MonoBehaviour
     public Dropdown checkOperaterDropdown;
     public InputField checkCountInputField;
     private GameController gameController;
+    public GameObject lightIcon;
 
     void Awake()
     {
@@ -27,6 +28,9 @@ public class InstructionInformation : MonoBehaviour
             SetCheckOperator();
         if (checkCountInputField != null)
             SetCheckCount();
+
+        GameObject light = Instantiate(lightIcon, transform);
+        light.GetComponent<RectTransform>().anchoredPosition = new Vector2(-30, 0);
     }
 
     public void SetJumpTo()

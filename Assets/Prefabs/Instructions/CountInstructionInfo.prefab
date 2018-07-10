@@ -286,6 +286,7 @@ MonoBehaviour:
   checkLetterInputField: {fileID: 114289695996098556}
   checkOperaterDropdown: {fileID: 0}
   checkCountInputField: {fileID: 0}
+  lightIcon: {fileID: 1606327494308620, guid: 664624fde2ec80c4291fbc5bce2612bb, type: 2}
 --- !u!114 &114986162097724692
 MonoBehaviour:
   m_ObjectHideFlags: 1

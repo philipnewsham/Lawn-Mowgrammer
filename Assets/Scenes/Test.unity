@@ -1043,6 +1043,60 @@ Prefab:
       propertyPath: m_Padding.m_Left
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 114091016007228246, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: dd63d7e5fdd6e2f4b9bb23f8df3d29d9,
+        type: 3}
+    - target: {fileID: 114409862807314024, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: dd63d7e5fdd6e2f4b9bb23f8df3d29d9,
+        type: 3}
+    - target: {fileID: 114580808583738772, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: dd63d7e5fdd6e2f4b9bb23f8df3d29d9,
+        type: 3}
+    - target: {fileID: 114702317264554372, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: dd63d7e5fdd6e2f4b9bb23f8df3d29d9,
+        type: 3}
+    - target: {fileID: 114601729317129602, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: dd63d7e5fdd6e2f4b9bb23f8df3d29d9,
+        type: 3}
+    - target: {fileID: 114595019971664400, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: dd63d7e5fdd6e2f4b9bb23f8df3d29d9,
+        type: 3}
+    - target: {fileID: 114029012690522666, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: dd63d7e5fdd6e2f4b9bb23f8df3d29d9,
+        type: 3}
+    - target: {fileID: 114567165357039090, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: dd63d7e5fdd6e2f4b9bb23f8df3d29d9,
+        type: 3}
+    - target: {fileID: 114316227054707334, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: dd63d7e5fdd6e2f4b9bb23f8df3d29d9,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ab71f99c82e305849bf58c1780f2c3e9, type: 2}
   m_IsPrefabParent: 0

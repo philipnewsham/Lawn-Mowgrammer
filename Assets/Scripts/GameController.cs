@@ -55,6 +55,10 @@ public class GameController : MonoBehaviour
     private bool dragInstruction;
     private Instruction currentInstruction;
 
+    private float lerpTime = 0.0f;
+    private Vector3 start = Vector3.zero;
+    private Vector3 end = Vector3.zero;
+
     public bool GetDrag()
     {
         return dragInstruction;
@@ -151,9 +155,9 @@ public class GameController : MonoBehaviour
                     Vector3 position = lawnMower.localPosition + lawnMower.forward;
                     if (!gardenController.ForwardBump(position))
                     {
-                        float lerpTime = 0.0f;
-                        Vector3 start = lawnMower.localPosition;
-                        Vector3 end = lawnMower.localPosition += lawnMower.forward;
+                        lerpTime = 0.0f;
+                        start = lawnMower.localPosition;
+                        end = lawnMower.localPosition += lawnMower.forward;
 
                         while (lerpTime <= 1.0f)
                         {
@@ -178,7 +182,18 @@ public class GameController : MonoBehaviour
                     bumped = false;
                     break;
                 case StateIdentifier.State.ROTATE:
-                    lawnMower.localEulerAngles = new Vector3(lawnMower.localEulerAngles.x, lawnMower.localEulerAngles.y + 90.0f, lawnMower.localEulerAngles.z);
+                    lerpTime = 0.0f;
+                    start = lawnMower.localEulerAngles;
+                    end = new Vector3(lawnMower.localEulerAngles.x, lawnMower.localEulerAngles.y + 90.0f, lawnMower.localEulerAngles.z);
+
+                    while(lerpTime <= 1.0f)
+                    {
+                        lawnMower.localEulerAngles = Vector3.Lerp(start, end, lerpTime);
+                        lerpTime += Time.deltaTime;
+                        yield return null;
+                    }
+
+                    lawnMower.localEulerAngles = end;
                     break;
                 case StateIdentifier.State.COUNT:
                     values[stateProgramme[i].checkLetter]++;
@@ -193,7 +208,6 @@ public class GameController : MonoBehaviour
                     i = stateProgramme.Count;
                     break;
             }
-            yield return new WaitForSeconds(1.0f);
             yield return new WaitWhile(() => busy);
         }
         Debug.Log("programme ended");

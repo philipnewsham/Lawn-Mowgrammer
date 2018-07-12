@@ -151,7 +151,18 @@ public class GameController : MonoBehaviour
                     Vector3 position = lawnMower.localPosition + lawnMower.forward;
                     if (!gardenController.ForwardBump(position))
                     {
-                        lawnMower.localPosition = lawnMower.localPosition += lawnMower.forward;
+                        float lerpTime = 0.0f;
+                        Vector3 start = lawnMower.localPosition;
+                        Vector3 end = lawnMower.localPosition += lawnMower.forward;
+
+                        while (lerpTime <= 1.0f)
+                        {
+                            lawnMower.localPosition = Vector3.Lerp(start, end, lerpTime);
+                            lerpTime += Time.deltaTime;
+                            yield return null;
+                        }
+                        lawnMower.localPosition = end;
+
                         gardenController.MowLawn(position);
                     }
                     else

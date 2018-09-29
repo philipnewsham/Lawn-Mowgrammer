@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour
     public GameObject textInstruction;
     public RectTransform textParent;
     private List<Text> textInstructions = new List<Text>();
-
+    public Button[] programButtons;
     private Transform lawnMower;
 
     private bool dragInstruction;
@@ -57,6 +57,7 @@ public class GameController : MonoBehaviour
 
     private float lerpTime = 0.0f;
     private Vector3 start = Vector3.zero;
+    private IEnumerator programRoutine;
     private Vector3 end = Vector3.zero;
 
     public bool GetDrag()
@@ -78,10 +79,13 @@ public class GameController : MonoBehaviour
     {
         return currentInstruction;
     }
-
+    private Vector3 mowerPos;
+    private Vector3 mowerRot;
     void Start()
     {
         lawnMower = GameObject.FindGameObjectWithTag("Player").transform;
+        mowerPos = lawnMower.position;
+        mowerRot = lawnMower.localEulerAngles;
         gardenController = FindObjectOfType<GardenController>();
         program = SaveController.Load();
         if (program.Count > 0)
@@ -123,27 +127,68 @@ public class GameController : MonoBehaviour
             instructionClone.GetComponent<InstructionInformation>().SetInstruction(instruction);
         }
     }
-
+    bool isRunning;
     public void StartProgramme()
     {
-        foreach (Text text in textInstructions)
-            Destroy(text.gameObject);
-        textInstructions.Clear();
-        program.Clear();
-
-        foreach (Transform child in panelParent)
+        if (!isRunning)
         {
-            program.Add(child.GetComponent<InstructionInformation>().instruction);
-            AddStringInstruction(child.GetComponent<InstructionInformation>().instruction);
-        }
+            isRunning = true;
+            foreach (Text text in textInstructions)
+                Destroy(text.gameObject);
+            textInstructions.Clear();
+            program.Clear();
 
-        SaveController.Save(program);
-        StartCoroutine(StartProgram(program));
+            foreach (Transform child in panelParent)
+            {
+                program.Add(child.GetComponent<InstructionInformation>().instruction);
+                AddStringInstruction(child.GetComponent<InstructionInformation>().instruction);
+            }
+
+            SaveController.Save(program);
+            programRoutine = StartProgram(program);
+            StartCoroutine(programRoutine);
+        }
+        else
+        {
+            isRunning = false;
+            lawnMower.position = mowerPos;
+            lawnMower.localEulerAngles = mowerRot;
+            UpdateStartButton(true);
+            EnableButtons(true);
+            if (programRoutine != null)
+            {
+                StopCoroutine(programRoutine);
+                programRoutine = null;
+            }
+            gardenController.UnMowLawn();
+        }
+    }
+
+    void EnableButtons(bool isTrue)
+    {
+        foreach (Button item in programButtons)
+            item.interactable = isTrue;
+    }
+    public Button startButton;
+    void UpdateStartButton(bool isStart)
+    {
+        if (isStart)
+        {
+            startButton.GetComponent<Image>().color = Color.green;
+            startButton.GetComponentInChildren<Text>().text = "Go";
+        }
+        else
+        {
+            startButton.GetComponent<Image>().color = Color.red;
+            startButton.GetComponentInChildren<Text>().text = "Stop";
+        }
     }
 
     IEnumerator StartProgram(List<Instruction> stateProgramme)
     {
         SaveController.Save(program);
+        UpdateStartButton(false);
+        EnableButtons(false);
         for (int i = 0; i < stateProgramme.Count; i++)
         {
             for (int j = 0; j < textInstructions.Count; j++)

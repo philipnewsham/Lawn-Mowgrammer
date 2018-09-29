@@ -25,6 +25,9 @@ public class DragInstruction : MonoBehaviour
 	
 	public void SpawnInstruction ()
     {
+        if (!GetComponent<Button>().interactable)
+            return;
+
         gameController.SetDrag(true);
         Instruction thisInstruction = new Instruction();
         thisInstruction.state = state;

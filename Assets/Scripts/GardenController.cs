@@ -70,6 +70,21 @@ public class GardenController : MonoBehaviour
         block.floorType = FloorType.MOWED;
     }
 
+    public void UnMowLawn()
+    {
+        foreach (GardenType block in gardenBlocks)
+        {
+            if (block.floorType == FloorType.MOWED)
+            {
+                block.floorType = FloorType.UNMOWED;
+                block.meshRenderer.material = materials[1];
+            }
+        }
+
+        gardenBlocks[0].meshRenderer.material = materials[0];
+        gardenBlocks[0].floorType = FloorType.MOWED;
+    }
+
     public bool ProgramComplete()
     {
         bool levelCleared = true;

@@ -605,6 +605,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1088055754}
+  - component: {fileID: 1088055755}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -625,6 +626,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1088055755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1088055753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a17686bd5191b2649bc4e6330938a9cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infoBox: {fileID: 531502232}
 --- !u!1 &1257331322
 GameObject:
   m_ObjectHideFlags: 0

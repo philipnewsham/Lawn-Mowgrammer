@@ -32,7 +32,6 @@ public class InstructionInformation : MonoBehaviour
 
         GameObject light = Instantiate(lightIcon, transform);
         light.GetComponent<RectTransform>().anchoredPosition = new Vector2(-30.0f, 0.0f);
-
         GameObject close = Instantiate(closeButton, transform);
         close.GetComponent<RectTransform>().anchoredPosition = new Vector2(30.0f, 0.0f);
     }

@@ -18,11 +18,13 @@ public class GenerateGarden : MonoBehaviour
 
     private float waitTime = 0.0f;
 
+    public string seedHash;
     public int seed;
     private System.Random rng;
 
     void Start()
     {
+        seed = seedHash.GetHashCode();
         if (seed == 0)
             seed = UnityEngine.Random.Range(0, int.MaxValue);
 

@@ -24,6 +24,7 @@ public class GenerateGarden : MonoBehaviour
 
     void Start()
     {
+        seedHash = SceneController.controller.seedName;
         seed = seedHash.GetHashCode();
         if (seed == 0)
             seed = UnityEngine.Random.Range(0, int.MaxValue);

@@ -34,6 +34,7 @@ public class InstructionInformation : MonoBehaviour
         light.GetComponent<RectTransform>().anchoredPosition = new Vector2(-30.0f, 0.0f);
         GameObject close = Instantiate(closeButton, transform);
         close.GetComponent<RectTransform>().anchoredPosition = new Vector2(30.0f, 0.0f);
+        close.GetComponent<Button>().onClick.AddListener(() => { gameController.RemoveInstructionFromProgram(instruction); Destroy(gameObject); });
     }
 
     public void SetJumpTo()

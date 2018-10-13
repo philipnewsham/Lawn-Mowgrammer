@@ -40,10 +40,11 @@ public class StateIdentifier
 [System.Serializable]
 public class GameController : MonoBehaviour
 {
+    public static GameController controller;
     private List<Instruction> program = new List<Instruction>();
     private GardenController gardenController;
-    private bool busy = false;
-    private bool bumped = false;
+    private bool isBusy = false;
+    private bool hasBumped = false;
     private int[] values = new int[26];
     private string[] letters = new string[26] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
     public GameObject textInstruction;
@@ -59,6 +60,14 @@ public class GameController : MonoBehaviour
     private Vector3 start = Vector3.zero;
     private IEnumerator programRoutine;
     private Vector3 end = Vector3.zero;
+
+    private void Awake()
+    {
+        if(controller == null)
+        {
+            controller = this;
+        }
+    }
 
     public bool GetDrag()
     {
@@ -215,16 +224,16 @@ public class GameController : MonoBehaviour
                         gardenController.MowLawn(position);
                     }
                     else
-                        bumped = true;
+                        hasBumped = true;
                     break;
                 case StateIdentifier.State.JUMP:
                     Debug.LogFormat("jump to {0}",stateProgramme[i].jumpTo-1);
                     i = stateProgramme[i].jumpTo - 1;
                     break;
                 case StateIdentifier.State.BUMP:
-                    if(bumped)
+                    if(hasBumped)
                         i = stateProgramme[i].jumpTo - 1;
-                    bumped = false;
+                    hasBumped = false;
                     break;
                 case StateIdentifier.State.ROTATE:
                     lerpTime = 0.0f;
@@ -253,7 +262,7 @@ public class GameController : MonoBehaviour
                     i = stateProgramme.Count;
                     break;
             }
-            yield return new WaitWhile(() => busy);
+            yield return new WaitWhile(() => isBusy);
         }
         Debug.Log("programme ended");
         EndProgram();
@@ -351,5 +360,11 @@ public class GameController : MonoBehaviour
             default:
                 return false;
         }
+    }
+
+    public void RemoveInstructionFromProgram(Instruction instruction)
+    {
+        if (program.Contains(instruction))
+            program.Remove(instruction);
     }
 }

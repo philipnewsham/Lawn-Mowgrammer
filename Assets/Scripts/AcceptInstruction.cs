@@ -59,8 +59,9 @@ public class AcceptInstruction : MonoBehaviour
     {
         if (gameController.GetCurrentInstruction() != null)
         {
-            GameObject clone = Instantiate(instructionPrefabs[(int)gameController.GetCurrentInstruction().state], transform);
-            clone.GetComponent<InstructionInformation>().instruction = gameController.GetCurrentInstruction();
+            Instruction thisInstruction = gameController.GetCurrentInstruction();
+            GameObject clone = Instantiate(instructionPrefabs[(int)thisInstruction.state], transform);
+            clone.GetComponent<InstructionInformation>().instruction = thisInstruction;
             Destroy(currentInstruction);
             currentInstruction = null;
             hasInstruction = false;

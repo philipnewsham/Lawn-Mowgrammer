@@ -628,6 +628,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7bdd932b565616d43a6f2ae99bd2fbd8, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &444095195 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114116163815573660, guid: ab71f99c82e305849bf58c1780f2c3e9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1947052492}
+  m_Script: {fileID: 11500000, guid: 474a6ce816dcbf24899d01b2bdc6af33, type: 3}
 --- !u!1 &531502232
 GameObject:
   m_ObjectHideFlags: 0
@@ -1763,6 +1769,75 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1719265256}
+--- !u!1 &1768577324 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1057859736135254, guid: ab71f99c82e305849bf58c1780f2c3e9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1947052492}
+--- !u!114 &1768577325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1768577324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 444095195}
+          m_MethodName: OnHover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 444095195}
+          m_MethodName: ExitHover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 444095195}
+          m_MethodName: MouseUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!1 &1778186394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2640,7 +2715,8 @@ Prefab:
       propertyPath: instructionParent
       value: 
       objectReference: {fileID: 5433812}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114625020920765514, guid: ab71f99c82e305849bf58c1780f2c3e9, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: ab71f99c82e305849bf58c1780f2c3e9, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &1947052493 stripped

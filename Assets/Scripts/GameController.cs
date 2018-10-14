@@ -65,6 +65,7 @@ public class GameController : MonoBehaviour
     public Button startButton;
     private int lastInstruction = -1;
     public Transform instructionParent;
+    bool isRunning;
 
     private void Awake()
     {
@@ -81,14 +82,7 @@ public class GameController : MonoBehaviour
         mowerRot = lawnMower.localEulerAngles;
         gardenController = FindObjectOfType<GardenController>();
         program = SaveController.Load();
-        UpdateProgram();
-        /*
-        if (program.Count > 0)
-        {
-            UpdateProgramString();
-            UpdateInstructionList();
-        }
-        */
+        UpdateInstructionList();
         CheckGoInteraction();
     }
 
@@ -142,7 +136,7 @@ public class GameController : MonoBehaviour
             instructionClone.GetComponent<InstructionInformation>().SetInstruction(instruction);
         }
     }
-    bool isRunning;
+
     public void StartProgramme()
     {
         if (!isRunning)
@@ -305,6 +299,7 @@ public class GameController : MonoBehaviour
     {
         program.Add(instruction);
         CheckGoInteraction();
+        SaveController.Save(program);
     }
 
     public void AddGenericInstruction(StateIdentifier.State state, int jumpTo)

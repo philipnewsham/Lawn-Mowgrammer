@@ -389,4 +389,16 @@ public class GameController : MonoBehaviour
     {
         startButton.interactable = program.Count > 0;
     }
+
+    public int ReturnOrderNoFromInstruction(Instruction instruction)
+    {
+        int order = 0;
+        foreach (Instruction item in program)
+        {
+            if (instruction == item)
+                return order;
+            order++;
+        }
+        return order;
+    }
 }

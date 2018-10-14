@@ -22,6 +22,9 @@ public class InstructionInformation : MonoBehaviour
 
     void Start()
     {
+        if (instruction.state == StateIdentifier.State.JUMP)
+            CreateJumpArrow();
+        
         if (jumpToInputField != null)
             SetJumpTo();
         if (checkLetterInputField != null)
@@ -39,9 +42,34 @@ public class InstructionInformation : MonoBehaviour
         close.GetComponent<Button>().onClick.AddListener(() => { gameController.RemoveInstructionFromProgram(instruction); Destroy(gameObject); });
     }
 
+    public GameObject arrow;
+    private RectTransform jumpArrow;
+
+    void CreateJumpArrow()
+    {
+        jumpArrow = Instantiate(arrow, transform).GetComponent<RectTransform>();
+
+        ArrowInfo info = ArrowController.controller.ReturnInfo();
+        jumpArrow.anchoredPosition = new Vector2(GetComponent<RectTransform>().sizeDelta.x + 30.0f + info.distance, -8.0f);
+        jumpArrow.sizeDelta = new Vector2(8.0f, 16.0f);
+        jumpArrow.GetComponent<Image>().color = info.color;
+    }
+
+    void UpdateArrowLength()
+    {
+        //scale = -1 when target is above
+        int target = instruction.jumpTo;
+        int current = gameController.ReturnOrderNoFromInstruction(instruction);
+        bool upsideDown = target < current;
+        jumpArrow.localScale = new Vector2(1, upsideDown ? -1 : 1);
+        jumpArrow.anchoredPosition = new Vector2(jumpArrow.anchoredPosition.x, upsideDown ? -24.0f : -8.0f);
+        jumpArrow.sizeDelta = new Vector2(jumpArrow.sizeDelta.x, 15.0f + (Mathf.Abs(current - target) * 30.0f));
+    }
+
     public void SetJumpTo()
     {
         instruction.jumpTo = int.Parse(jumpToInputField.text);
+        UpdateArrowLength();
     }
 
     public void SetCheckLetter()

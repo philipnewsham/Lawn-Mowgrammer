@@ -11,6 +11,6 @@ public class SendButtonInformation : MonoBehaviour
     public void SendInformation()
     {
         int jumpTo = int.Parse(inputField.text);
-        FindObjectOfType<GameController>().AddGenericInstruction(state, jumpTo);
+        //FindObjectOfType<GameController>().AddGenericInstruction(state, jumpTo);
     }
 }

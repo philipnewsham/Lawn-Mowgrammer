@@ -67,6 +67,7 @@ public class AcceptInstruction : MonoBehaviour
             hasInstruction = false;
             gameController.SetCurrentInstruction(null);
             sizeToChildren.UpdateHeight();
+            gameController.AddToProgram(thisInstruction);
         }
     }
 }

@@ -19,6 +19,6 @@ public class SendCountInformation : MonoBehaviour
         Instruction instruction = new Instruction();
         instruction.state = state;
         instruction.checkLetter = gameController.ReturnIntFromLetter(inputFields.text);
-        gameController.AddSpecificInstruction(instruction);
+        //gameController.AddSpecificInstruction(instruction);
     }
 }

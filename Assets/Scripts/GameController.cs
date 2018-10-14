@@ -60,6 +60,9 @@ public class GameController : MonoBehaviour
     private Vector3 start = Vector3.zero;
     private IEnumerator programRoutine;
     private Vector3 end = Vector3.zero;
+    private Vector3 mowerPos;
+    private Vector3 mowerRot;
+    public Button startButton;
 
     private void Awake()
     {
@@ -67,6 +70,24 @@ public class GameController : MonoBehaviour
         {
             controller = this;
         }
+    }
+
+    void Start()
+    {
+        lawnMower = GameObject.FindGameObjectWithTag("Player").transform;
+        mowerPos = lawnMower.position;
+        mowerRot = lawnMower.localEulerAngles;
+        gardenController = FindObjectOfType<GardenController>();
+        program = SaveController.Load();
+        UpdateProgram();
+        /*
+        if (program.Count > 0)
+        {
+            UpdateProgramString();
+            UpdateInstructionList();
+        }
+        */
+        CheckGoInteraction();
     }
 
     public bool GetDrag()
@@ -88,28 +109,16 @@ public class GameController : MonoBehaviour
     {
         return currentInstruction;
     }
-    private Vector3 mowerPos;
-    private Vector3 mowerRot;
-    void Start()
-    {
-        lawnMower = GameObject.FindGameObjectWithTag("Player").transform;
-        mowerPos = lawnMower.position;
-        mowerRot = lawnMower.localEulerAngles;
-        gardenController = FindObjectOfType<GardenController>();
-        program = SaveController.Load();
-        if (program.Count > 0)
-        {
-            UpdateProgramString();
-            UpdateInstructionList();
-        }
-    }
 
     public void ClearProgram()
     {
         ClearShownInstructions();
-        textInstructions.Clear();
         program.Clear();
         SaveController.Save(program);
+        if (isRunning)
+            StartProgramme();
+        UpdateStartButton(true);
+        CheckGoInteraction();
     }
 
     void ClearShownInstructions()
@@ -121,11 +130,6 @@ public class GameController : MonoBehaviour
             Destroy(child.gameObject);
     }
 
-    void UpdateProgramString()
-    {
-        foreach (Instruction instruction in program)
-            AddStringInstruction(instruction);
-    }
     public GameObject[] instructionButton;
 
     void UpdateInstructionList()
@@ -142,18 +146,6 @@ public class GameController : MonoBehaviour
         if (!isRunning)
         {
             isRunning = true;
-            foreach (Text text in textInstructions)
-                Destroy(text.gameObject);
-            textInstructions.Clear();
-            program.Clear();
-
-            foreach (Transform child in panelParent)
-            {
-                program.Add(child.GetComponent<InstructionInformation>().instruction);
-                AddStringInstruction(child.GetComponent<InstructionInformation>().instruction);
-            }
-
-            SaveController.Save(program);
             programRoutine = StartProgram(program);
             StartCoroutine(programRoutine);
         }
@@ -173,12 +165,29 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void UpdateProgram()
+    {
+        foreach (Text text in textInstructions)
+            Destroy(text.gameObject);
+        textInstructions.Clear();
+        program.Clear();
+        foreach (Transform child in panelParent)
+        {
+            Debug.Log(child.name);
+            program.Add(child.GetComponent<InstructionInformation>().instruction);
+            AddStringInstruction(child.GetComponent<InstructionInformation>().instruction);
+        }
+
+        SaveController.Save(program);
+        CheckGoInteraction();
+    }
+
     void EnableButtons(bool isTrue)
     {
         foreach (Button item in programButtons)
             item.interactable = isTrue;
     }
-    public Button startButton;
+
     void UpdateStartButton(bool isStart)
     {
         if (isStart)
@@ -195,7 +204,6 @@ public class GameController : MonoBehaviour
 
     IEnumerator StartProgram(List<Instruction> stateProgramme)
     {
-        SaveController.Save(program);
         UpdateStartButton(false);
         EnableButtons(false);
         for (int i = 0; i < stateProgramme.Count; i++)
@@ -288,6 +296,12 @@ public class GameController : MonoBehaviour
         return int.Parse(value);
     }
 
+    public void AddToProgram(Instruction instruction)
+    {
+        program.Add(instruction);
+        CheckGoInteraction();
+    }
+
     public void AddGenericInstruction(StateIdentifier.State state, int jumpTo)
     {
         Instruction instruction = new Instruction();
@@ -298,8 +312,9 @@ public class GameController : MonoBehaviour
 
     public void AddSpecificInstruction(Instruction instruction)
     {
-        AddStringInstruction(instruction);
-        program.Add(instruction);
+        //AddStringInstruction(instruction);
+        //program.Add(instruction);
+        CheckGoInteraction();
     }
 
     public Transform panelParent;
@@ -366,5 +381,12 @@ public class GameController : MonoBehaviour
     {
         if (program.Contains(instruction))
             program.Remove(instruction);
+
+        CheckGoInteraction();
+    }
+
+    void CheckGoInteraction()
+    {
+        startButton.interactable = program.Count > 0;
     }
 }

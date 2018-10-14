@@ -63,6 +63,8 @@ public class GameController : MonoBehaviour
     private Vector3 mowerPos;
     private Vector3 mowerRot;
     public Button startButton;
+    private int lastInstruction = -1;
+    public Transform instructionParent;
 
     private void Awake()
     {
@@ -208,8 +210,10 @@ public class GameController : MonoBehaviour
         EnableButtons(false);
         for (int i = 0; i < stateProgramme.Count; i++)
         {
-            for (int j = 0; j < textInstructions.Count; j++)
-                textInstructions[j].color = (j == i) ? Color.red : Color.black;
+            if (lastInstruction > -1)
+                instructionParent.GetChild(lastInstruction).GetComponent<InstructionInformation>().LightColor();
+            instructionParent.GetChild(i).GetComponent<InstructionInformation>().LightColor();
+            lastInstruction = i;
 
             switch (stateProgramme[i].state)
             {
@@ -237,6 +241,7 @@ public class GameController : MonoBehaviour
                 case StateIdentifier.State.JUMP:
                     Debug.LogFormat("jump to {0}",stateProgramme[i].jumpTo-1);
                     i = stateProgramme[i].jumpTo - 1;
+                    yield return new WaitForSeconds(0.5f);
                     break;
                 case StateIdentifier.State.BUMP:
                     if(hasBumped)

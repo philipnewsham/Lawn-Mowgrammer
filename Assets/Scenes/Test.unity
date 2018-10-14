@@ -113,6 +113,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!224 &5433812 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224919206686443288, guid: ab71f99c82e305849bf58c1780f2c3e9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1947052492}
 --- !u!1 &18810287
 GameObject:
   m_ObjectHideFlags: 0
@@ -2630,6 +2635,11 @@ Prefab:
       propertyPath: startButton
       value: 
       objectReference: {fileID: 358973852}
+    - target: {fileID: 114398136766238454, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: instructionParent
+      value: 
+      objectReference: {fileID: 5433812}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ab71f99c82e305849bf58c1780f2c3e9, type: 2}
   m_IsPrefabParent: 0

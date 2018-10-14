@@ -13,6 +13,7 @@ public class InstructionInformation : MonoBehaviour
     private GameController gameController;
     public GameObject lightIcon;
     public GameObject closeButton;
+    private Image instructionLight;
 
     void Awake()
     {
@@ -32,6 +33,7 @@ public class InstructionInformation : MonoBehaviour
 
         GameObject light = Instantiate(lightIcon, transform);
         light.GetComponent<RectTransform>().anchoredPosition = new Vector2(-30.0f, 0.0f);
+        instructionLight = light.GetComponent<Image>();
         GameObject close = Instantiate(closeButton, transform);
         close.GetComponent<RectTransform>().anchoredPosition = new Vector2(30.0f, 0.0f);
         close.GetComponent<Button>().onClick.AddListener(() => { gameController.RemoveInstructionFromProgram(instruction); Destroy(gameObject); });
@@ -78,5 +80,13 @@ public class InstructionInformation : MonoBehaviour
                 checkLetterInputField.text = gameController.ReturnLetterFromInt(instruction.checkLetter);
                 break;
         }
+    }
+
+    private bool isLit = false;
+    public void LightColor()
+    {
+        isLit = !isLit;
+        Debug.Log(isLit);
+        instructionLight.color = isLit ? Color.yellow : Color.white;
     }
 }

@@ -401,4 +401,6 @@ public class GameController : MonoBehaviour
         }
         return order;
     }
+
+    public InstructionInformation hoverInstruction;
 }

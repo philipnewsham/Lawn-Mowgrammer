@@ -2731,6 +2731,11 @@ Prefab:
       propertyPath: instructionParent
       value: 
       objectReference: {fileID: 5433812}
+    - target: {fileID: 114973533943184084, guid: ab71f99c82e305849bf58c1780f2c3e9,
+        type: 2}
+      propertyPath: m_Spacing
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114625020920765514, guid: ab71f99c82e305849bf58c1780f2c3e9, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: ab71f99c82e305849bf58c1780f2c3e9, type: 2}

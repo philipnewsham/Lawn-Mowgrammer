@@ -68,6 +68,7 @@ public class InstructionInformation : MonoBehaviour
 
     public void SetJumpTo()
     {
+        return;
         instruction.jumpTo = int.Parse(jumpToInputField.text);
         UpdateArrowLength();
     }
@@ -116,5 +117,48 @@ public class InstructionInformation : MonoBehaviour
         isLit = !isLit;
         Debug.Log(isLit);
         instructionLight.color = isLit ? Color.yellow : Color.white;
+    }
+
+    //JUMP
+    private bool targetEnabled = false;
+    public GameObject targetObject;
+    private RectTransform target;
+    private RectTransform canvas;
+
+    public void EnableJumpTarget()
+    {
+        targetEnabled = true;
+        canvas = transform.root.GetComponent<RectTransform>();
+        target = Instantiate(targetObject, canvas).GetComponent<RectTransform>();
+    }
+
+    private void Update()
+    {
+        if (!targetEnabled)
+            return;
+
+        target.position = Input.mousePosition;
+        if (Input.GetMouseButtonUp(0))
+        {
+            targetEnabled = false;
+            Destroy(target.gameObject);
+
+            if(gameController.hoverInstruction != null)
+            {
+                instruction.jumpTo = gameController.ReturnOrderNoFromInstruction(gameController.hoverInstruction.instruction);
+                UpdateArrowLength();
+            }
+        }
+    }
+
+    public void SetHoverInstruction()
+    {
+        Debug.Log("setting hover instruction");
+        gameController.hoverInstruction = this;
+    }
+
+    public void RemoveHoverInstruction()
+    {
+        gameController.hoverInstruction = null;
     }
 }

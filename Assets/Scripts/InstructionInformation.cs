@@ -22,7 +22,7 @@ public class InstructionInformation : MonoBehaviour
 
     void Start()
     {
-        if (instruction.state == StateIdentifier.State.JUMP)
+        if (instruction.state == StateIdentifier.State.JUMP || instruction.state == StateIdentifier.State.BUMP)
             CreateJumpArrow();
         
         if (jumpToInputField != null)

@@ -272,6 +272,8 @@ public class GameController : MonoBehaviour
             yield return new WaitWhile(() => isBusy);
         }
         Debug.Log("programme ended");
+        instructionParent.GetChild(lastInstruction).GetComponent<InstructionInformation>().LightColor();
+        lastInstruction = -1;
         EndProgram();
     }
 

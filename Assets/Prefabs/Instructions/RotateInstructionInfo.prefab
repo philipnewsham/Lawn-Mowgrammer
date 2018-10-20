@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114303216793099652}
   - component: {fileID: 114610680279817552}
   - component: {fileID: 114199810658865384}
+  - component: {fileID: 114072069203901634}
   m_Layer: 5
   m_Name: RotateInstructionInfo
   m_TagString: Untagged
@@ -47,6 +48,53 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114072069203901634
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1029921454301866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114199810658865384}
+          m_MethodName: SetHoverInstruction
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114199810658865384}
+          m_MethodName: RemoveHoverInstruction
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!114 &114199810658865384
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -72,6 +120,7 @@ MonoBehaviour:
   closeButton: {fileID: 1769556388572968, guid: 5131a781bcf2f5c4eb3856fb4cc18de6,
     type: 2}
   arrow: {fileID: 1226526511615638, guid: 33968d00a5289f246a740864b5c413b1, type: 2}
+  targetObject: {fileID: 0}
 --- !u!114 &114303216793099652
 MonoBehaviour:
   m_ObjectHideFlags: 1

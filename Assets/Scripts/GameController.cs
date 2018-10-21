@@ -16,11 +16,11 @@ public class Instruction
         EQUAL_MORE  //>=
     }
 
-    public State state;
-    public int jumpTo;
-    public int checkLetter;
-    public Operator checkOperator;
-    public string checkCount;
+    public State state;             //type of instruction
+    public int jumpTo;              //next instruction (if is able to jump around)
+    public int checkLetter;         //variable to add to
+    public Operator checkOperator;  //check type (see above)
+    public string checkCount;       //value to check against - can be either int or variable
 }
 
 
@@ -113,7 +113,7 @@ public class GameController : MonoBehaviour
         program.Clear();
         SaveController.Save(program);
         if (isRunning)
-            StartProgramme();
+            StartProgram();
         UpdateStartButton(true);
         CheckGoInteraction();
     }
@@ -137,29 +137,72 @@ public class GameController : MonoBehaviour
             instructionClone.GetComponent<InstructionInformation>().SetInstruction(instruction);
         }
     }
-
-    public void StartProgramme()
+    public void ClickPowerButton()
     {
         if (!isRunning)
-        {
-            isRunning = true;
-            programRoutine = StartProgram(program);
-            StartCoroutine(programRoutine);
-        }
+            StartProgram();
         else
+            StopProgram();
+    }
+    
+    void StartProgram()
+    {
+        isRunning = true;
+        programRoutine = StartProgramRoutine(program);
+        StartCoroutine(programRoutine);
+        GetUsedVariables();
+    }
+
+    void StopProgram()
+    {
+        isRunning = false;
+        lawnMower.position = mowerPos;
+        lawnMower.localEulerAngles = mowerRot;
+        UpdateStartButton(true);
+        EnableButtons(true);
+        if (programRoutine != null)
         {
-            isRunning = false;
-            lawnMower.position = mowerPos;
-            lawnMower.localEulerAngles = mowerRot;
-            UpdateStartButton(true);
-            EnableButtons(true);
-            if (programRoutine != null)
-            {
-                StopCoroutine(programRoutine);
-                programRoutine = null;
-            }
-            gardenController.UnMowLawn();
+            StopCoroutine(programRoutine);
+            programRoutine = null;
         }
+        gardenController.UnMowLawn();
+
+        for (int i = 0; i < values.Length; i++)
+            values[i] = 0;
+    }
+
+    public UpdateVariableText updateVariableText;
+
+    void GetUsedVariables()
+    {
+        List<VariableInfo> variableInfo = new List<VariableInfo>();
+        foreach (Instruction item in program)
+        {
+            if(item.state == State.CHECK || item.state == State.COUNT)
+            {
+                if(!ContainsValue(variableInfo, item.checkLetter))
+                {
+                    VariableInfo info = new VariableInfo
+                    {
+                        name = letters[item.checkLetter],
+                        value = values[item.checkLetter]
+                    };
+                    variableInfo.Add(info);
+                }
+            }
+        }
+
+        updateVariableText.UpdateText(variableInfo);
+    }
+
+    bool ContainsValue(List<VariableInfo> variableInfos, int value)
+    {
+        foreach (VariableInfo item in variableInfos)
+        {
+            if (item.name == letters[value])
+                return true;
+        }
+        return false;
     }
 
     public void UpdateProgram()
@@ -199,7 +242,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    IEnumerator StartProgram(List<Instruction> stateProgramme)
+    IEnumerator StartProgramRoutine(List<Instruction> stateProgramme)
     {
         UpdateStartButton(false);
         EnableButtons(false);
@@ -259,7 +302,8 @@ public class GameController : MonoBehaviour
                     break;
                 case State.COUNT:
                     values[stateProgramme[i].checkLetter]++;
-                    Debug.Log(values[stateProgramme[i].checkLetter]);
+                    GetUsedVariables();
+                    yield return new WaitForSeconds(0.5f);
                     break;
                 case State.CHECK:
                     Debug.LogFormat("if {0} {1} {2} jump {3}", values[stateProgramme[i].checkLetter], operatorStrings[(int)stateProgramme[i].checkOperator], ReturnValue(stateProgramme[i].checkCount), stateProgramme[i].jumpTo);

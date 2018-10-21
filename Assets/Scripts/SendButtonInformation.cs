@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using StateIdentifier;
 
 public class SendButtonInformation : MonoBehaviour
 {
-    public StateIdentifier.State state;
+    public State state;
     public InputField inputField;
 
     public void SendInformation()

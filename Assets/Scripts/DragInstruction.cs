@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using StateIdentifier;
 
 public class DragInstruction : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class DragInstruction : MonoBehaviour
     private Vector3 localPos;
     private GameController gameController;
 
-    public StateIdentifier.State state;
+    public State state;
 
 	void Start ()
     {

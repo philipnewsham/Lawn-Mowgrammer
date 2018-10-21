@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using StateIdentifier;
 
 public class SendCountInformation : MonoBehaviour
 {
-    private StateIdentifier.State state = StateIdentifier.State.COUNT;
+    private readonly State state = State.COUNT;
     public InputField inputFields;
     private GameController gameController;
 
@@ -16,9 +17,10 @@ public class SendCountInformation : MonoBehaviour
 
     public void SendInformation()
     {
-        Instruction instruction = new Instruction();
-        instruction.state = state;
-        instruction.checkLetter = gameController.ReturnIntFromLetter(inputFields.text);
-        //gameController.AddSpecificInstruction(instruction);
+        Instruction instruction = new Instruction
+        {
+            state = state,
+            checkLetter = gameController.ReturnIntFromLetter(inputFields.text)
+        };
     }
 }

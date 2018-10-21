@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using StateIdentifier;
 
 [System.Serializable]
 public class Instruction
@@ -15,7 +16,7 @@ public class Instruction
         EQUAL_MORE  //>=
     }
 
-    public StateIdentifier.State state;
+    public State state;
     public int jumpTo;
     public int checkLetter;
     public Operator checkOperator;
@@ -23,7 +24,7 @@ public class Instruction
 }
 
 
-public class StateIdentifier
+namespace StateIdentifier
 {
     public enum State
     {
@@ -211,7 +212,7 @@ public class GameController : MonoBehaviour
 
             switch (stateProgramme[i].state)
             {
-                case StateIdentifier.State.FORWARD:
+                case State.FORWARD:
                     Vector3 position = lawnMower.localPosition + lawnMower.forward;
                     if (!gardenController.ForwardBump(position))
                     {
@@ -232,17 +233,17 @@ public class GameController : MonoBehaviour
                     else
                         hasBumped = true;
                     break;
-                case StateIdentifier.State.JUMP:
+                case State.JUMP:
                     Debug.LogFormat("jump to {0}",stateProgramme[i].jumpTo-1);
                     i = stateProgramme[i].jumpTo - 1;
                     yield return new WaitForSeconds(0.5f);
                     break;
-                case StateIdentifier.State.BUMP:
+                case State.BUMP:
                     if(hasBumped)
                         i = stateProgramme[i].jumpTo - 1;
                     hasBumped = false;
                     break;
-                case StateIdentifier.State.ROTATE:
+                case State.ROTATE:
                     lerpTime = 0.0f;
                     start = lawnMower.localEulerAngles;
                     end = new Vector3(lawnMower.localEulerAngles.x, lawnMower.localEulerAngles.y + 90.0f, lawnMower.localEulerAngles.z);
@@ -256,16 +257,16 @@ public class GameController : MonoBehaviour
 
                     lawnMower.localEulerAngles = end;
                     break;
-                case StateIdentifier.State.COUNT:
+                case State.COUNT:
                     values[stateProgramme[i].checkLetter]++;
                     Debug.Log(values[stateProgramme[i].checkLetter]);
                     break;
-                case StateIdentifier.State.CHECK:
+                case State.CHECK:
                     Debug.LogFormat("if {0} {1} {2} jump {3}", values[stateProgramme[i].checkLetter], operatorStrings[(int)stateProgramme[i].checkOperator], ReturnValue(stateProgramme[i].checkCount), stateProgramme[i].jumpTo);
                     if(CheckCondition(stateProgramme[i].checkOperator, ReturnValue(stateProgramme[i].checkCount), values[stateProgramme[i].checkLetter]))
                         i = stateProgramme[i].jumpTo - 1;
                     break;
-                case StateIdentifier.State.STOP:
+                case State.STOP:
                     i = stateProgramme.Count;
                     break;
             }
@@ -304,11 +305,13 @@ public class GameController : MonoBehaviour
         SaveController.Save(program);
     }
 
-    public void AddGenericInstruction(StateIdentifier.State state, int jumpTo)
+    public void AddGenericInstruction(State state, int jumpTo)
     {
-        Instruction instruction = new Instruction();
-        instruction.state = state;
-        instruction.jumpTo = jumpTo;
+        Instruction instruction = new Instruction
+        {
+            state = state,
+            jumpTo = jumpTo
+        };
         AddSpecificInstruction(instruction);
     }
 
@@ -351,11 +354,11 @@ public class GameController : MonoBehaviour
         GameObject textClone = Instantiate(textInstruction, textParent);
         Text textBox = textClone.GetComponent<Text>();
         textBox.text = textBox.text + string.Format("{0} {1} ", program.Count, instruction.state.ToString());
-        if (instruction.state == StateIdentifier.State.JUMP || instruction.state == StateIdentifier.State.BUMP)
+        if (instruction.state == State.JUMP || instruction.state == State.BUMP)
             textBox.text += string.Format("to {0}", instruction.jumpTo);
-        if (instruction.state == StateIdentifier.State.COUNT)
+        if (instruction.state == State.COUNT)
             textBox.text += string.Format("{0}++", letters[instruction.checkLetter]);
-        if (instruction.state == StateIdentifier.State.CHECK)
+        if (instruction.state == State.CHECK)
             textBox.text += string.Format("[{0} {1} {2}] to {3}", letters[instruction.checkLetter], operatorStrings[(int)instruction.checkOperator], instruction.checkCount, instruction.jumpTo);
         textInstructions.Add(textClone.GetComponent<Text>());
     }

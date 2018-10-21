@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using StateIdentifier;
 
 public class InstructionInformation : MonoBehaviour
 {
@@ -47,7 +48,8 @@ public class InstructionInformation : MonoBehaviour
 
     bool HasJumpCommand()
     {
-        return instruction.state == StateIdentifier.State.JUMP || instruction.state == StateIdentifier.State.BUMP;
+        State state = instruction.state;
+        return state == State.JUMP || state == State.BUMP || state == State.CHECK;
     }
 
     public GameObject arrow;
@@ -101,16 +103,16 @@ public class InstructionInformation : MonoBehaviour
         this.instruction = instruction;
         switch (instruction.state)
         {
-            case StateIdentifier.State.BUMP:
+            case State.BUMP:
                 jumpToInputField.text = instruction.jumpTo.ToString();
                 break;
-            case StateIdentifier.State.JUMP:
+            case State.JUMP:
                 jumpToInputField.text = instruction.jumpTo.ToString();
                 break;
-            case StateIdentifier.State.COUNT:
+            case State.COUNT:
                 checkLetterInputField.text = gameController.ReturnLetterFromInt(instruction.checkLetter);
                 break;
-            case StateIdentifier.State.CHECK:
+            case State.CHECK:
                 jumpToInputField.text = instruction.jumpTo.ToString();
                 checkOperaterDropdown.value = (int)instruction.checkOperator;
                 checkCountInputField.text = instruction.checkCount;

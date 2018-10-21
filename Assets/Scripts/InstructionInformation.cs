@@ -125,7 +125,6 @@ public class InstructionInformation : MonoBehaviour
     public void LightColor()
     {
         isLit = !isLit;
-        Debug.Log(isLit);
         instructionLight.color = isLit ? Color.yellow : Color.white;
     }
 
@@ -163,7 +162,6 @@ public class InstructionInformation : MonoBehaviour
 
     public void SetHoverInstruction()
     {
-        Debug.Log("setting hover instruction");
         gameController.hoverInstruction = this;
     }
 

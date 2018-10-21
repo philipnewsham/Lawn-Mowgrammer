@@ -22,8 +22,11 @@ public class InstructionInformation : MonoBehaviour
 
     void Start()
     {
-        if (instruction.state == StateIdentifier.State.JUMP || instruction.state == StateIdentifier.State.BUMP)
+        if (HasJumpCommand())
+        {
             CreateJumpArrow();
+            UpdateArrowLength();
+        }
         
         if (jumpToInputField != null)
             SetJumpTo();
@@ -40,6 +43,11 @@ public class InstructionInformation : MonoBehaviour
         GameObject close = Instantiate(closeButton, transform);
         close.GetComponent<RectTransform>().anchoredPosition = new Vector2(30.0f, 0.0f);
         close.GetComponent<Button>().onClick.AddListener(() => { gameController.RemoveInstructionFromProgram(instruction); Destroy(gameObject); });
+    }
+
+    bool HasJumpCommand()
+    {
+        return instruction.state == StateIdentifier.State.JUMP || instruction.state == StateIdentifier.State.BUMP;
     }
 
     public GameObject arrow;
